@@ -1,0 +1,24 @@
+// mixins.less
+
+// Flex center mixin
+.flex-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Border radius mixin
+.border-radius(@radius) {
+  border-radius: @radius;
+}
+
+// Box shadow mixin (type: sm | md | glow)
+.box-shadow(@type) when (@type = sm) {
+  box-shadow: var(--shadow-sm);
+}
+.box-shadow(@type) when (@type = md) {
+  box-shadow: var(--shadow-md);
+}
+.box-shadow(@type) when (@type = glow) {
+  box-shadow: var(--shadow-glow);
+}
