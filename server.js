@@ -337,6 +337,10 @@ app.post('/questions/fetchBulk', (req, res) => {
   res.json({ success: true, data: filtered });
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend Server is running on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Backend Server is running on port ${PORT}`);
+  });
+}
+
+export default app;
