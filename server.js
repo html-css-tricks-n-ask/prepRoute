@@ -13,6 +13,14 @@ const PORT = process.env.PORT || 5001;
 
 app.use(express.json());
 
+// Strip /api prefix for Vercel serverless compatibility
+app.use((req, res, next) => {
+  if (req.url.startsWith('/api')) {
+    req.url = req.url.replace(/^\/api/, '');
+  }
+  next();
+});
+
 // Log requests
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
