@@ -5,6 +5,28 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>taskmanagement</title>
+    <script>
+      window.addEventListener('error', function(e) {
+        var errorDiv = document.getElementById('debug-error');
+        if (!errorDiv) {
+          errorDiv = document.createElement('div');
+          errorDiv.id = 'debug-error';
+          errorDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#fee2e2;color:#991b1b;padding:20px;z-index:999999;font-family:monospace;border-bottom:3px solid #ef4444;white-space:pre-wrap;overflow:auto;max-height:50vh;';
+          document.body.appendChild(errorDiv);
+        }
+        errorDiv.textContent += '\nUncaught Error: ' + (e.error ? e.error.stack || e.error.message || e.error : e.message);
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        var errorDiv = document.getElementById('debug-error');
+        if (!errorDiv) {
+          errorDiv = document.createElement('div');
+          errorDiv.id = 'debug-error';
+          errorDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#fee2e2;color:#991b1b;padding:20px;z-index:999999;font-family:monospace;border-bottom:3px solid #ef4444;white-space:pre-wrap;overflow:auto;max-height:50vh;';
+          document.body.appendChild(errorDiv);
+        }
+        errorDiv.textContent += '\nUnhandled Promise Rejection: ' + (e.reason ? e.reason.stack || e.reason.message || e.reason : e);
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

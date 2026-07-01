@@ -195,6 +195,17 @@ export default function Dashboard() {
 
   return (
     <div>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Test"
+        message={`Are you sure you want to delete the test "${testToDelete?.name || ''}"?\n\nThis action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+        isLoading={isDeleting}
+      />
       <div className="dashboard-header">
         <div>
           <h1 style={{ fontSize: '1.85rem', marginBottom: '0.25rem' }}>Tests Directory</h1>
