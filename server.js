@@ -28,24 +28,33 @@ app.use((req, res, next) => {
 });
 
 // Read/Write DB Helpers
+let memoryDb = null;
+
 const readDb = () => {
+  if (memoryDb) return memoryDb;
   try {
     if (!fs.existsSync(dbPath)) {
-      return { subjects: [], topics: [], sub_topics: [], tests: [], questions: [] };
+      memoryDb = { subjects: [], topics: [], sub_topics: [], tests: [], questions: [] };
+      return memoryDb;
     }
     const data = fs.readFileSync(dbPath, 'utf8');
-    return JSON.parse(data);
+    memoryDb = JSON.parse(data);
+    return memoryDb;
   } catch (err) {
     console.error("Error reading database", err);
-    return { subjects: [], topics: [], sub_topics: [], tests: [], questions: [] };
+    memoryDb = { subjects: [], topics: [], sub_topics: [], tests: [], questions: [] };
+    return memoryDb;
   }
 };
 
 const writeDb = (data) => {
-  try {
-    fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
-  } catch (err) {
-    console.error("Error writing database", err);
+  memoryDb = data;
+  if (!process.env.VERCEL) {
+    try {
+      fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
+    } catch (err) {
+      console.error("Error writing database", err);
+    }
   }
 };
 
