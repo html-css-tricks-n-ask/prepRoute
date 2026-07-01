@@ -1,0 +1,29 @@
+// animations.less
+@import "./variables.less";
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-fast) ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

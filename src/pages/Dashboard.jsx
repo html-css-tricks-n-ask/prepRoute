@@ -13,6 +13,10 @@ import {
   useDeleteTestMutation 
 } from '../store/apiSlice';
 import { FiPlus } from 'react-icons/fi';
+import Button from '../components/common/Button';
+import Badge from '../components/common/Badge';
+import EmptyState from '../components/common/EmptyState';
+import Card from '../components/common/Card';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -30,7 +34,6 @@ export default function Dashboard() {
   // Delete modal state triggers
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [testToDelete, setTestToDelete] = useState(null);
-  
 
   const handleDelete = useCallback((testId, testName) => {
     setTestToDelete({ id: testId, name: testName });
@@ -38,19 +41,18 @@ export default function Dashboard() {
   }, []);
 
   const handleConfirmDelete = async () => {
-      if (!testToDelete) return;
-      try {
-        await deleteTest(testToDelete.id).unwrap();
-        toast.success('Test deleted successfully.');
-        // Optimistically remove from UI by refetching the tests list
-        refetchTests();
-        setIsDeleteModalOpen(false);
-        setTestToDelete(null);
-      } catch (err) {
-        console.error(err);
-        toast.error(err.data?.message || err.message || 'Something went wrong. Please try again.');
-      }
-    };
+    if (!testToDelete) return;
+    try {
+      await deleteTest(testToDelete.id).unwrap();
+      toast.success('Test deleted successfully.');
+      refetchTests();
+      setIsDeleteModalOpen(false);
+      setTestToDelete(null);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.data?.message || err.message || 'Something went wrong. Please try again.');
+    }
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -62,7 +64,7 @@ export default function Dashboard() {
     }
   };
 
-  // Client-side filtering logic memoized to prevent re-computation on unrelated re-renders
+  // Client-side filtering logic memoized
   const filteredTests = useMemo(() => {
     return tests.filter(test => {
       const matchesSearch = test.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -83,23 +85,15 @@ export default function Dashboard() {
     {
       accessorKey: 'name',
       header: 'Test Name',
-      cell: (info) => <span style={{ fontWeight: 600 }}>{info.getValue()}</span>,
+      cell: (info) => <span style={{ fontWeight: 600, color: 'var(--heading)' }}>{info.getValue()}</span>,
     },
     {
       accessorKey: 'subject',
       header: 'Subject',
       cell: (info) => (
-        <span style={{ 
-          padding: '0.25rem 0.5rem', 
-          background: 'var(--primary-glow)', 
-          border: '1px solid var(--border-color)',
-          borderRadius: '4px',
-          fontSize: '0.8rem',
-          fontWeight: 500,
-          color: 'var(--primary)'
-        }}>
+        <Badge variant="primary" style={{ backgroundColor: 'var(--primary-light)', color: 'var(--primary)', border: '1px solid rgba(91,92,235,0.1)' }}>
           {info.getValue()}
-        </span>
+        </Badge>
       ),
     },
     {
@@ -107,7 +101,7 @@ export default function Dashboard() {
       header: 'Status',
       cell: (info) => {
         const status = info.getValue() || 'draft';
-        return <span className={`badge badge-${status}`}>{status}</span>;
+        return <Badge status={status} />;
       },
     },
     {
@@ -132,8 +126,9 @@ export default function Dashboard() {
         const test = row.original;
         return (
           <div className="table-actions" style={{ justifyContent: 'flex-end' }}>
-            <button 
-              className="btn btn-secondary btn-icon" 
+            <Button 
+              variant="outline" 
+              className="btn-icon" 
               title="View & Preview"
               onClick={() => navigate(`/test/${test.id}/preview`)}
             >
@@ -141,11 +136,12 @@ export default function Dashboard() {
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
-            </button>
+            </Button>
 
             {test.status !== 'live' ? (
-              <button 
-                className="btn btn-secondary btn-icon" 
+              <Button 
+                variant="outline" 
+                className="btn-icon" 
                 title="Edit Test Details"
                 onClick={() => navigate(`/test/edit/${test.id}`)}
               >
@@ -153,10 +149,11 @@ export default function Dashboard() {
                   <path d="M12 20h9"></path>
                   <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
                 </svg>
-              </button>
+              </Button>
             ) : (
-              <button 
-                className="btn btn-secondary btn-icon" 
+              <Button 
+                variant="outline" 
+                className="btn-icon" 
                 title="Edit locked (Published)"
                 disabled
                 style={{ opacity: 0.25, cursor: 'not-allowed' }}
@@ -165,19 +162,21 @@ export default function Dashboard() {
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
-              </button>
+              </Button>
             )}
 
-            <button                className="btn btn-danger btn-icon"
-                title="Delete Test"
-                onClick={() => handleDelete(test.id, test.name)}
-                disabled={isDeleting}
-              >
+            <Button 
+              variant="danger" 
+              className="btn-icon" 
+              title="Delete Test"
+              onClick={() => handleDelete(test.id, test.name)}
+              disabled={isDeleting}
+            >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="3 6 5 6 21 6"></polyline>
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
               </svg>
-            </button>
+            </Button>
           </div>
         );
       },
@@ -206,19 +205,20 @@ export default function Dashboard() {
         isDestructive={true}
         isLoading={isDeleting}
       />
-      <div className="dashboard-header">
+      
+      <div className="dashboard-header mb-5">
         <div>
-          <h1 style={{ fontSize: '1.85rem', marginBottom: '0.25rem' }}>Tests Directory</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Create, manage, and publish academic tests</p>
+          <h1 className="page-title mb-1">Tests Directory</h1>
+          <p className="small-text text-muted" style={{ margin: 0 }}>Create, manage, and publish academic tests</p>
         </div>
-        <button className="btn btn-primary" onClick={() => navigate('/test/create')}>
+        <Button variant="primary" onClick={() => navigate('/test/create')}>
           <FiPlus style={{ marginRight: '6px' }} size={16} />
           Create New Test
-        </button>
+        </Button>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="filter-bar" style={{ marginBottom: '1.5rem' }}>
+      <div className="filter-bar mb-5">
         <div style={{ display: 'flex', flex: 1, gap: '0.75rem', minWidth: '280px' }}>
           <div style={{ position: 'relative', width: '100%' }}>
             <input
@@ -270,9 +270,9 @@ export default function Dashboard() {
       )}
 
       {loading ? (
-        <div className="card skeleton-pulse" style={{ padding: '1.5rem' }}>
+        <Card className="skeleton-pulse">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '1rem' }}>
               <div className="skeleton-line" style={{ width: '30%' }}></div>
               <div className="skeleton-line" style={{ width: '15%' }}></div>
               <div className="skeleton-line" style={{ width: '10%' }}></div>
@@ -281,7 +281,7 @@ export default function Dashboard() {
               <div className="skeleton-line" style={{ width: '15%', marginLeft: 'auto' }}></div>
             </div>
             {[1, 2, 3, 4].map(i => (
-              <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #f1f5f9' }}>
+              <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border)' }}>
                 <div className="skeleton-line" style={{ width: '30%', height: '20px' }}></div>
                 <div className="skeleton-line" style={{ width: '15%' }}></div>
                 <div className="skeleton-line" style={{ width: '10%' }}></div>
@@ -295,11 +295,15 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
-        </div>
+        </Card>
       ) : filteredTests.length === 0 ? (
-        <div className="card" style={{ padding: '4rem 2rem' }}>
-          <div className="empty-state">
-            <div className="empty-state-icon">
+        <Card style={{ padding: '64px 32px' }}>
+          <EmptyState
+            title="No Tests Found"
+            description={tests.length === 0 
+              ? "Get started by creating your very first test. You can add questions and publish it later." 
+              : "No tests match your current search and filter criteria. Try adjusting them."}
+            icon={
               <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
@@ -307,22 +311,16 @@ export default function Dashboard() {
                 <line x1="9" y1="19" x2="15" y2="19"></line>
                 <line x1="9" y1="11" x2="10" y2="11"></line>
               </svg>
-            </div>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>No Tests Found</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', maxWidth: '360px', margin: '0 auto 1.5rem auto' }}>
-              {tests.length === 0 
-                ? "Get started by creating your very first test. You can add questions and publish it later." 
-                : "No tests match your current search and filter criteria. Try adjusting them."}
-            </p>
-            {tests.length === 0 && (
-              <button className="btn btn-primary" onClick={() => navigate('/test/create')}>
+            }
+            actionButton={tests.length === 0 && (
+              <Button onClick={() => navigate('/test/create')}>
                 Create New Test
-              </button>
+              </Button>
             )}
-          </div>
-        </div>
+          />
+        </Card>
       ) : (
-        <div className="table-container card" style={{ padding: 0, overflow: 'hidden' }}>
+        <div className="table-container">
           <table className="table">
             <thead>
               {table.getHeaderGroups().map(headerGroup => (

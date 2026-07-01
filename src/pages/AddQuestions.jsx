@@ -14,6 +14,11 @@ import {
   useUpdateTestMutation,
 } from '../store/apiSlice';
 import RichTextEditor from '../components/RichTextEditor';
+import Button from '../components/common/Button';
+import Input from '../components/common/Input';
+import Card from '../components/common/Card';
+import Badge from '../components/common/Badge';
+import EmptyState from '../components/common/EmptyState';
 
 // Question Zod schema
 const questionSchema = z.object({
@@ -168,14 +173,11 @@ export default function AddQuestions() {
   };
 
   const handleDeleteQuestion = (index) => {
-    console.log('Delete button clicked, index:', index);
-    // Open confirmation modal instead of immediate confirm
     setDeleteIdx(index);
     setIsDeleteConfirmOpen(true);
   };
 
   const confirmDelete = () => {
-    console.log('Confirm delete, deleteIdx:', deleteIdx);
     if (deleteIdx === null) return;
     setQuestionsList(prev => prev.filter((_, idx) => idx !== deleteIdx));
     if (editingIndex === deleteIdx) {
@@ -230,29 +232,10 @@ export default function AddQuestions() {
   if (loading) {
     return (
       <div className="skeleton-pulse" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        {/* Stepper skeleton */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '1rem' }}>
           <div className="skeleton-line" style={{ width: '150px', height: '24px' }}></div>
           <div className="skeleton-line" style={{ width: '150px', height: '24px' }}></div>
           <div className="skeleton-line" style={{ width: '150px', height: '24px' }}></div>
-        </div>
-        {/* Active session card skeleton */}
-        <div className="card" style={{ height: '100px' }}></div>
-        
-        <div style={{ display: 'grid', gridTemplateColumns: '6fr 4fr', gap: '2rem' }}>
-          {/* Left builder skeleton */}
-          <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '24px' }}>
-            <div className="skeleton-line" style={{ width: '40%', height: '24px' }}></div>
-            <div className="skeleton-line" style={{ width: '100%', height: '120px' }}></div>
-            <div className="skeleton-line" style={{ width: '100%', height: '48px' }}></div>
-            <div className="skeleton-line" style={{ width: '100%', height: '48px' }}></div>
-          </div>
-          {/* Right questions list skeleton */}
-          <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '24px' }}>
-            <div className="skeleton-line" style={{ width: '50%', height: '24px' }}></div>
-            <div className="skeleton-line" style={{ width: '100%', height: '60px' }}></div>
-            <div className="skeleton-line" style={{ width: '100%', height: '60px' }}></div>
-          </div>
         </div>
       </div>
     );
@@ -291,40 +274,40 @@ export default function AddQuestions() {
 
       {/* Test details banner */}
       {test && (
-        <div className="card" style={{ marginBottom: '2rem', background: '#EEF2FF', borderColor: '#C7D2FE' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+        <Card className="mb-6" style={{ background: 'var(--primary-light)', borderColor: 'rgba(91,92,235,0.15)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
             <div>
-              <span className="badge" style={{ marginBottom: '0.5rem', background: '#5B5CEB', color: 'white' }}>
+              <Badge status="live" style={{ marginBottom: '8px', background: 'var(--primary)', color: 'white', border: 'none' }}>
                 Active Session
-              </span>
-              <h2 style={{ fontSize: '1.4rem', margin: 0, color: '#111827', fontWeight: 700 }}>{test.name}</h2>
-              <p style={{ color: '#6B7280', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-                Subject: <strong style={{ color: '#111827' }}>{test.subject}</strong> | Difficulty: <strong style={{ color: '#111827' }}>{test.difficulty}</strong>
+              </Badge>
+              <h2 className="section-title" style={{ margin: 0 }}>{test.name}</h2>
+              <p className="small-text text-muted" style={{ margin: '4px 0 0 0' }}>
+                Subject: <strong style={{ color: 'var(--heading)' }}>{test.subject}</strong> | Difficulty: <strong style={{ color: 'var(--heading)' }}>{test.difficulty}</strong>
               </p>
             </div>
-            <div style={{ display: 'flex', gap: '1.5rem', borderLeft: '1px solid #C7D2FE', paddingLeft: '1.5rem' }}>
+            <div style={{ display: 'flex', gap: '24px', borderLeft: '1px solid var(--border)', paddingLeft: '24px' }}>
               <div>
-                <div style={{ fontSize: '0.8rem', color: '#6B7280' }}>MAPPING SCHEME</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#111827' }}>+{test.correct_marks} / {test.wrong_marks}</div>
+                <div className="caption text-muted">MARKING SCHEME</div>
+                <div className="small-text" style={{ fontWeight: 600, color: 'var(--heading)' }}>+{test.correct_marks} / {test.wrong_marks}</div>
               </div>
               <div>
-                <div style={{ fontSize: '0.8rem', color: '#6B7280' }}>DURATION</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#111827' }}>{test.total_time} mins</div>
+                <div className="caption text-muted">DURATION</div>
+                <div className="small-text" style={{ fontWeight: 600, color: 'var(--heading)' }}>{test.total_time} mins</div>
               </div>
               <div>
-                <div style={{ fontSize: '0.8rem', color: '#6B7280' }}>TOTAL Qs</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#5B5CEB' }}>{questionsList.length} Qs</div>
+                <div className="caption text-muted">TOTAL Qs</div>
+                <div className="small-text" style={{ fontWeight: 600, color: 'var(--primary)' }}>{questionsList.length} Qs</div>
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       )}
 
-      <div className="grid-2" style={{ alignItems: 'start', gap: '2rem' }}>
+      <div className="form-grid-two-col" style={{ alignItems: 'start', gap: '24px' }}>
         
         {/* Left Side: Question Builder Form */}
-        <div id="question-form-container" className="card">
-          <h3 className="card-title" style={{ fontSize: '1.25rem', marginBottom: '1.25rem' }}>
+        <div id="question-form-container" className="card" style={{ padding: '24px' }}>
+          <h3 className="card-title mb-4">
             {editingIndex !== null ? '📝 Edit Question details' : '➕ Question Builder'}
           </h3>
 
@@ -333,12 +316,12 @@ export default function AddQuestions() {
               background: 'rgba(239, 68, 68, 0.12)',
               border: '1px solid rgba(239, 68, 68, 0.25)',
               borderRadius: 'var(--radius-sm)',
-              color: '#fca5a5',
-              padding: '0.75rem',
-              fontSize: '0.85rem',
-              marginBottom: '1rem'
+              color: 'var(--danger)',
+              padding: '12px',
+              fontSize: '14px',
+              marginBottom: '16px'
             }}>
-              <ul style={{ paddingLeft: '1rem', margin: 0 }}>
+              <ul style={{ paddingLeft: '16px', margin: 0 }}>
                 {errorsList.map((err, i) => (
                   <li key={i}>{err}</li>
                 ))}
@@ -357,56 +340,48 @@ export default function AddQuestions() {
           />
 
           {/* Options input */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.25rem', marginTop: '1rem' }}>
-            <div className="form-group" style={{ margin: 0 }}>
-              <label className="form-label">Option 1 <span className="required">*</span></label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Option 1"
-                {...register('option1')}
-                disabled={submitting}
-              />
-            </div>
-            <div className="form-group" style={{ margin: 0 }}>
-              <label className="form-label">Option 2 <span className="required">*</span></label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Option 2"
-                {...register('option2')}
-                disabled={submitting}
-              />
-            </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px', marginTop: '16px' }}>
+            <Input
+              label="Option 1"
+              placeholder="Option 1"
+              disabled={submitting}
+              error={errors.option1?.message}
+              {...register('option1')}
+              style={{ marginBottom: 0 }}
+            />
+            <Input
+              label="Option 2"
+              placeholder="Option 2"
+              disabled={submitting}
+              error={errors.option2?.message}
+              {...register('option2')}
+              style={{ marginBottom: 0 }}
+            />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.25rem' }}>
-            <div className="form-group" style={{ margin: 0 }}>
-              <label className="form-label">Option 3 <span className="required">*</span></label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Option 3"
-                {...register('option3')}
-                disabled={submitting}
-              />
-            </div>
-            <div className="form-group" style={{ margin: 0 }}>
-              <label className="form-label">Option 4 <span className="required">*</span></label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Option 4"
-                {...register('option4')}
-                disabled={submitting}
-              />
-            </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+            <Input
+              label="Option 3"
+              placeholder="Option 3"
+              disabled={submitting}
+              error={errors.option3?.message}
+              {...register('option3')}
+              style={{ marginBottom: 0 }}
+            />
+            <Input
+              label="Option 4"
+              placeholder="Option 4"
+              disabled={submitting}
+              error={errors.option4?.message}
+              {...register('option4')}
+              style={{ marginBottom: 0 }}
+            />
           </div>
 
           {/* Correct Option */}
           <div className="form-group">
             <label className="form-label">
-              Correct Answer Option <span className="required">*</span>
+              Correct Answer Option
             </label>
             <select
               className="form-control"
@@ -421,13 +396,13 @@ export default function AddQuestions() {
             </select>
           </div>
 
-          {/* Optional details collapse/section */}
-          <h4 style={{ fontSize: '0.9rem', marginBottom: '0.75rem', color: '#38bdf8', fontWeight: 500 }}>
+          {/* Optional details */}
+          <h4 className="small-text mb-3" style={{ fontWeight: 600, color: 'var(--primary)' }}>
             Optional Question Metadata
           </h4>
 
-          <div className="grid-2">
-            <div className="form-group">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Topic</label>
               <select
                 className="form-control"
@@ -445,7 +420,7 @@ export default function AddQuestions() {
               </select>
             </div>
 
-            <div className="form-group">
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Sub-topic</label>
               <select
                 className="form-control"
@@ -464,8 +439,8 @@ export default function AddQuestions() {
             </div>
           </div>
 
-          <div className="grid-2">
-            <div className="form-group">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Difficulty</label>
               <select
                 className="form-control"
@@ -479,16 +454,14 @@ export default function AddQuestions() {
               </select>
             </div>
 
-            <div className="form-group">
-              <label className="form-label">Media URL</label>
-              <input
-                type="text"
-                className={`form-control ${errors.media_url ? 'border-red-500' : ''}`}
-                placeholder="Image/diagram URL"
-                {...register('media_url')}
-                disabled={submitting}
-              />
-            </div>
+            <Input
+              label="Media URL"
+              placeholder="Image/diagram URL"
+              disabled={submitting}
+              error={errors.media_url?.message}
+              {...register('media_url')}
+              style={{ marginBottom: 0 }}
+            />
           </div>
 
           {/* Explanation rich editor */}
@@ -501,20 +474,18 @@ export default function AddQuestions() {
             disabled={submitting}
           />
 
-          <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
-            <button
-              type="button"
-              className="btn btn-primary"
+          <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
+            <Button
+              variant="primary"
               style={{ flex: 1 }}
               onClick={handleSubmit(handleAddQuestion)}
               disabled={submitting}
             >
               {editingIndex !== null ? 'Update Question' : 'Add Question'}
-            </button>
+            </Button>
             {editingIndex !== null && (
-              <button
-                type="button"
-                className="btn btn-secondary"
+              <Button
+                variant="outline"
                 onClick={() => {
                   setEditingIndex(null);
                   reset();
@@ -522,95 +493,99 @@ export default function AddQuestions() {
                 disabled={submitting}
               >
                 Cancel Edit
-              </button>
+              </Button>
             )}
           </div>
         </div>
 
         {/* Right Side: Questions Preview Queue */}
         <div style={{ flex: 1 }}>
-          <div className="card" style={{ minHeight: '400px' }}>
-            <h3 className="card-title" style={{ fontSize: '1.25rem', marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="card" style={{ minHeight: '400px', padding: '24px' }}>
+            <h3 className="card-title mb-4" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span>Questions List</span>
-              <span className="badge badge-live" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#0ea5e9' }}>
+              <Badge status="live" style={{ background: 'var(--primary-light)', color: 'var(--primary)', border: 'none' }}>
                 {questionsList.length} Added
-              </span>
+              </Badge>
             </h3>
 
             {questionsList.length === 0 ? (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '300px', color: 'var(--text-muted)' }}>
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '1rem' }}>
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 8v4" />
-                  <path d="M12 16h.01" />
-                </svg>
-                <div style={{ fontWeight: 500, color: 'var(--text-secondary)' }}>No questions added yet.</div>
-                <div style={{ fontSize: '0.85rem', marginTop: '0.25rem' }}>Use the builder on the left to write questions.</div>
-              </div>
+              <EmptyState
+                title="No questions added yet"
+                description="Use the builder on the left to write questions."
+                icon={
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v4" />
+                    <path d="M12 16h.01" />
+                  </svg>
+                }
+              />
             ) : (
-              <div style={{ maxHeight: '720px', overflowY: 'auto', paddingRight: '0.25rem' }}>
+              <div style={{ maxHeight: '720px', overflowY: 'auto', paddingRight: '4px' }}>
                 {questionsList.map((q, idx) => (
-                  <div key={idx} className="question-item">
-                    <div className="question-header">
-                      <span className="question-number">Question {idx + 1}</span>
-                      <div className="question-actions">
-                        <button
-                          className="btn btn-secondary btn-icon"
+                  <div key={idx} className="question-item" style={{ border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '16px', background: 'var(--card-bg)' }}>
+                    <div className="question-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                      <span className="question-number" style={{ fontWeight: 600, color: 'var(--heading)' }}>Question {idx + 1}</span>
+                      <div className="question-actions" style={{ display: 'flex', gap: '8px' }}>
+                        <Button
+                          variant="outline"
+                          className="btn-icon"
                           onClick={() => handleEditQuestion(idx)}
                           title="Edit"
-                          style={{ padding: '0.25rem' }}
+                          style={{ width: '32px', height: '32px' }}
                         >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M12 20h9"></path>
                             <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
                           </svg>
-                        </button>
-                        <button
-                          className="btn btn-danger btn-icon"
+                        </Button>
+                        <Button
+                          variant="danger"
+                          className="btn-icon"
                           onClick={() => handleDeleteQuestion(idx)}
                           title="Delete"
-                          style={{ padding: '0.25rem' }}
+                          style={{ width: '32px', height: '32px' }}
                         >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
                           </svg>
-                        </button>
+                        </Button>
                       </div>
                     </div>
 
-                    <div className="question-text">{q.question}</div>
+                    <div className="question-text" style={{ fontSize: '15px', color: 'var(--heading)', marginBottom: '12px' }}>{q.question}</div>
 
-                    <div className="options-grid">
-                      <div className={`option-preview ${q.correct_option === 'option1' ? 'correct' : ''}`}>
+                    <div className="options-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
+                      <div className={`option-preview ${q.correct_option === 'option1' ? 'correct' : ''}`} style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}>
                         <strong>A:</strong> {q.option1}
                       </div>
-                      <div className={`option-preview ${q.correct_option === 'option2' ? 'correct' : ''}`}>
+                      <div className={`option-preview ${q.correct_option === 'option2' ? 'correct' : ''}`} style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}>
                         <strong>B:</strong> {q.option2}
                       </div>
-                      <div className={`option-preview ${q.correct_option === 'option3' ? 'correct' : ''}`}>
+                      <div className={`option-preview ${q.correct_option === 'option3' ? 'correct' : ''}`} style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}>
                         <strong>C:</strong> {q.option3}
                       </div>
-                      <div className={`option-preview ${q.correct_option === 'option4' ? 'correct' : ''}`}>
+                      <div className={`option-preview ${q.correct_option === 'option4' ? 'correct' : ''}`} style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}>
                         <strong>D:</strong> {q.option4}
                       </div>
                     </div>
 
-                    <div className="question-meta">
+                    <div className="question-meta" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                       {q.difficulty && (
-                        <span className="meta-pill" style={{ textTransform: 'capitalize' }}>
+                        <Badge status="draft" style={{ textTransform: 'capitalize' }}>
                           Difficulty: {q.difficulty}
-                        </span>
+                        </Badge>
                       )}
                       {q.topic_id && (
-                        <span className="meta-pill">
+                        <Badge status="draft">
                           Topic: {allTopics.find(t => t.id === q.topic_id)?.name || 'Custom'}
-                        </span>
+                        </Badge>
                       )}
                       {q.media_url && (
-                        <span className="meta-pill" style={{ color: '#0ea5e9' }}>
-                          📎 Has Media Attachment
-                        </span>
+                        <Badge status="live" style={{ background: 'var(--primary-light)', color: 'var(--primary)', border: 'none' }}>
+                          📎 Attachment
+                        </Badge>
                       )}
                     </div>
                   </div>
@@ -622,53 +597,40 @@ export default function AddQuestions() {
       </div>
 
       {/* Navigation Footer */}
-      <div className="card" style={{ marginTop: '2rem', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={() => navigate(`/test/edit/${testId}`)}
-          disabled={submitting}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-          Back to Details
-        </button>
+      <Card style={{ marginTop: '24px', padding: '16px 24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <Button
+            variant="outline"
+            onClick={() => navigate(`/test/edit/${testId}`)}
+            disabled={submitting}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Details
+          </Button>
 
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => navigate('/')}
-            disabled={submitting}
-          >
-            Exit to Dashboard
-          </button>
-          
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleSaveAndContinue}
-            disabled={submitting}
-            style={{ minWidth: '160px' }}
-          >
-            {submitting ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
-                <span className="loading-spinner" style={{ width: '16px', height: '16px', border: '2px solid #ffffff', borderTopColor: 'transparent' }}></span> Saving...
-              </div>
-            ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
-                Save & Continue
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </div>
-            )}
-          </button>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <Button
+              variant="outline"
+              onClick={() => navigate('/')}
+              disabled={submitting}
+            >
+              Exit to Dashboard
+            </Button>
+            
+            <Button
+              variant="primary"
+              onClick={handleSaveAndContinue}
+              isLoading={submitting}
+              style={{ minWidth: '160px' }}
+            >
+              Save & Continue
+            </Button>
+          </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

@@ -1,24 +1,41 @@
 // mixins.less
+@import "./variables.less";
 
-// Flex center mixin
 .flex-center() {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-// Border radius mixin
-.border-radius(@radius) {
-  border-radius: @radius;
+.flex-between() {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-// Box shadow mixin (type: sm | md | glow)
-.box-shadow(@type) when (@type = sm) {
-  box-shadow: var(--shadow-sm);
+.flex-column() {
+  display: flex;
+  flex-direction: column;
 }
-.box-shadow(@type) when (@type = md) {
-  box-shadow: var(--shadow-md);
+
+.transition(@prop: all, @duration: var(--transition-fast)) {
+  transition: @prop @duration;
 }
-.box-shadow(@type) when (@type = glow) {
-  box-shadow: var(--shadow-glow);
+
+.focus-ring() {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--primary);
+}
+
+.focus-ring-danger() {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--danger);
+}
+
+.card-style() {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
 }

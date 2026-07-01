@@ -7,6 +7,8 @@ import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { useLoginMutation } from '../store/apiSlice';
 import { setCredentials } from '../store/authSlice';
+import Button from '../components/common/Button';
+import Input from '../components/common/Input';
 
 // Define login validation schema using Zod
 const loginSchema = z.object({
@@ -35,10 +37,8 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     try {
-      // Call the RTK Query login mutation
       const response = await login(data).unwrap();
       
-      // Save credentials in Redux state (which also saves to localStorage)
       dispatch(setCredentials({
         token: response.token,
         user: response.user
@@ -48,7 +48,6 @@ export default function Login() {
       navigate('/');
     } catch (err) {
       console.error('Login failed:', err);
-      // Trigger shake effect for feedback
       triggerShake();
       const errorMsg = err.data?.message || err.message || 'Login failed. Please verify credentials.';
       toast.error(errorMsg);
@@ -120,41 +119,26 @@ export default function Login() {
                 <div className="subtitle">Use your company provided Login credentials</div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="login-form-element">
-                  <div className="login-form-group">
-                    <label className="login-form-label" htmlFor="userId">User ID</label>
-                    <input
-                      type="text"
-                      id="userId"
-                      className={`login-form-control ${errors.userId ? 'border-red-500 focus:border-red-500' : ''}`}
-                      placeholder="Enter User ID"
-                      {...register('userId')}
-                      disabled={isLoading}
-                      autoComplete="username"
-                    />
-                    {errors.userId && (
-                      <span className="text-red-500 text-xs mt-1 block text-left">
-                        {errors.userId.message}
-                      </span>
-                    )}
-                  </div>
+                  <Input
+                    label="User ID"
+                    id="userId"
+                    placeholder="Enter User ID"
+                    error={errors.userId?.message}
+                    disabled={isLoading}
+                    autoComplete="username"
+                    {...register('userId')}
+                  />
 
-                  <div className="login-form-group" style={{ marginBottom: '0.75rem' }}>
-                    <label className="login-form-label" htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      id="password"
-                      className={`login-form-control ${errors.password ? 'border-red-500 focus:border-red-500' : ''}`}
-                      placeholder="Enter Password"
-                      {...register('password')}
-                      disabled={isLoading}
-                      autoComplete="current-password"
-                    />
-                    {errors.password && (
-                      <span className="text-red-500 text-xs mt-1 block text-left">
-                        {errors.password.message}
-                      </span>
-                    )}
-                  </div>
+                  <Input
+                    label="Password"
+                    id="password"
+                    type="password"
+                    placeholder="Enter Password"
+                    error={errors.password?.message}
+                    disabled={isLoading}
+                    autoComplete="current-password"
+                    {...register('password')}
+                  />
 
                   <a 
                     href="#forgot" 
@@ -167,20 +151,14 @@ export default function Login() {
                     Forgot password?
                   </a>
 
-                  <button
+                  <Button
                     type="submit"
-                    className="login-action-btn"
-                    disabled={isLoading}
+                    variant="primary"
+                    isLoading={isLoading}
+                    style={{ width: '100%', height: '44px', marginTop: 'auto' }}
                   >
-                    {isLoading ? (
-                      <>
-                        <span className="loading-spinner" style={{ width: '18px', height: '18px', borderWidth: '2px', borderColor: '#ffffff', borderTopColor: 'transparent' }}></span>
-                        Logging in...
-                      </>
-                    ) : (
-                      'Login'
-                    )}
-                  </button>
+                    Login
+                  </Button>
                 </form>
               </div>
             </div>

@@ -1,0 +1,31 @@
+// cards.less
+@import "./variables.less";
+@import "./mixins.less";
+
+.card {
+  .card-style();
+  margin-bottom: 24px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.card-body {
+  color: var(--body-text);
+  font-size: 15px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}

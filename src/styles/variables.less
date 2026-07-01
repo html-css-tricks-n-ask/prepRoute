@@ -1,36 +1,56 @@
 // variables.less
+
 :root {
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  /* Color Palette - Premium SaaS Light Theme */
-  --bg-app: #f8fafc;
-  --bg-surface: #ffffff;
-  --border-color: #e5e7eb;
-  --border-card: #eef2f7;
-  --border-color-focus: #5b5ceb;
-  --primary: #5b5ceb;
-  --primary-hover: #4f46e5;
-  --primary-glow: rgba(91, 92, 235, 0.15);
-  --secondary: #7c3aed;
-  --secondary-glow: rgba(124, 58, 237, 0.1);
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
-  --success: #22c55e;
-  --success-bg: rgba(34, 197, 94, 0.1);
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.1);
-  --error: #ef4444;
-  --error-bg: rgba(239, 68, 68, 0.1);
-  /* Border Radii */
-  --radius-sm: 6px;
-  --radius-badge: 999px;
-  --radius-btn: 12px;
+  // Brand Colors
+  --primary: #5B5FEF;
+  --primary-hover: #4C51D8;
+  --primary-light: #EEF2FF;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  
+  // Theme Backgrounds & Borders
+  --background: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --border: #E5E7EB;
+
+  // Text Colors
+  --heading: #111827;
+  --body-text: #6B7280;
+  --muted-text: #9CA3AF;
+  
+  // Font Family
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  
+  // Transitions
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  
+  // Radii
+  --radius-sm: 8px;
+  --radius-md: 12px;
   --radius-card: 16px;
-  /* Shadows */
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.08);
-  --shadow-glow: none;
-  /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-btn: 8px;
+  --radius-input: 8px;
+  --radius-badge: 9999px;
+  
+  // Shadows
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
+
+// LESS variables matching design system
+@primary: var(--primary);
+@primary-hover: var(--primary-hover);
+@primary-light: var(--primary-light);
+@success: var(--success);
+@warning: var(--warning);
+@danger: var(--danger);
+@background: var(--background);
+@card-bg: var(--card-bg);
+@border: var(--border);
+@heading: var(--heading);
+@body-text: var(--body-text);
+@muted-text: var(--muted-text);
