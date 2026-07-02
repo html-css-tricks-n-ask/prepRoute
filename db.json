@@ -119,102 +119,6 @@
   ],
   "tests": [
     {
-      "id": "259848fd-0d55-415e-a7ee-eba59c797e30",
-      "name": "Hayfa Vaughan",
-      "type": "mock",
-      "subject": "Mathematics",
-      "subject_id": "sub-1",
-      "topics": [
-        "Calculus"
-      ],
-      "topic_ids": [
-        "topic-1-3"
-      ],
-      "sub_topics": [
-        "Limits & Continuity"
-      ],
-      "sub_topic_ids": [
-        "subtopic-1-3-1"
-      ],
-      "correct_marks": 5,
-      "wrong_marks": -1,
-      "unattempt_marks": 0,
-      "difficulty": "easy",
-      "total_time": 85,
-      "total_marks": 5,
-      "total_questions": 1,
-      "status": "live",
-      "questions": [
-        "e9f11376-8778-43dc-9870-107826e2e68d"
-      ],
-      "created_at": "2026-07-01T12:43:02.243Z",
-      "updated_at": "2026-07-01T12:43:25.650Z"
-    },
-    {
-      "id": "ea20b4d4-f31f-4535-aeac-00bf9ac289bf",
-      "name": "Rina Maddoxccccc",
-      "type": "chapterwise",
-      "subject": "Chemistry",
-      "subject_id": "sub-3",
-      "topics": [
-        "Inorganic Chemistry"
-      ],
-      "topic_ids": [
-        "topic-3-2"
-      ],
-      "sub_topics": [
-        "Chemical Bonding"
-      ],
-      "sub_topic_ids": [
-        "subtopic-3-2-2"
-      ],
-      "correct_marks": 5,
-      "wrong_marks": -1,
-      "unattempt_marks": 0,
-      "difficulty": "medium",
-      "total_time": 49,
-      "total_marks": 230,
-      "total_questions": 46,
-      "status": "draft",
-      "questions": [],
-      "created_at": "2026-07-01T12:54:21.825Z",
-      "updated_at": "2026-07-01T14:34:24.699Z"
-    },
-    {
-      "id": "b4d284a9-395c-432b-8727-ff3ba0b96383",
-      "name": "Herman Alford",
-      "type": "chapterwise",
-      "subject": "Physics",
-      "subject_id": "sub-2",
-      "topics": [
-        "Mechanics"
-      ],
-      "topic_ids": [
-        "topic-2-1"
-      ],
-      "sub_topics": [
-        "Newton's Laws"
-      ],
-      "sub_topic_ids": [
-        "subtopic-2-1-2"
-      ],
-      "correct_marks": 5,
-      "wrong_marks": -1,
-      "unattempt_marks": 0,
-      "difficulty": "medium",
-      "total_time": 23,
-      "total_marks": 15,
-      "total_questions": 3,
-      "status": "live",
-      "questions": [
-        "032bc153-ca3d-49f1-b0ba-01551178f697",
-        "1fd3d4e1-58ff-4c7b-a600-87542eafbc72",
-        "a75f91c0-fdc1-485d-9227-a2119ffc5701"
-      ],
-      "created_at": "2026-07-01T12:55:57.711Z",
-      "updated_at": "2026-07-01T12:56:41.886Z"
-    },
-    {
       "id": "79818e03-0c54-483a-b4d1-e393ecd7eac2",
       "name": "Emery Alvarez",
       "type": "chapterwise",
@@ -367,77 +271,42 @@
       "status": "draft",
       "questions": [],
       "created_at": "2026-07-02T05:04:39.575Z"
+    },
+    {
+      "id": "0701869e-ce51-4764-9aa9-ffee8ac68937",
+      "name": "Declan Clayton",
+      "type": "chapterwise",
+      "subject": "Chemistry",
+      "subject_id": "sub-3",
+      "topics": [
+        "Inorganic Chemistry"
+      ],
+      "topic_ids": [
+        "topic-3-2"
+      ],
+      "sub_topics": [
+        "Chemical Bonding"
+      ],
+      "sub_topic_ids": [
+        "subtopic-3-2-2"
+      ],
+      "correct_marks": 5,
+      "wrong_marks": -1,
+      "unattempt_marks": 0,
+      "difficulty": "medium",
+      "total_time": 78,
+      "total_marks": 10,
+      "total_questions": 2,
+      "status": "draft",
+      "questions": [
+        "e5ee86a5-6c34-4e02-8a2e-6344c873e1a0",
+        "cea2c208-86af-4dd8-8e1b-5b750758534a"
+      ],
+      "created_at": "2026-07-02T05:25:12.061Z",
+      "updated_at": "2026-07-02T05:26:37.772Z"
     }
   ],
   "questions": [
-    {
-      "id": "e9f11376-8778-43dc-9870-107826e2e68d",
-      "type": "mcq",
-      "question": "Nam fuga Eius beata",
-      "option1": "Nemo vel maxime plac",
-      "option2": "Sint rerum sint est",
-      "option3": "Inventore modi ipsa",
-      "option4": "Libero aliquip conse",
-      "correct_option": "option3",
-      "explanation": "Sunt culpa animi of",
-      "difficulty": "easy",
-      "test_id": "259848fd-0d55-415e-a7ee-eba59c797e30",
-      "topic_id": "topic-1-3",
-      "sub_topic_id": "subtopic-1-3-1",
-      "media_url": "http://localhost:5174/test/45af830e-8dad-4173-8b4e-6a9b7786ca8a/questions",
-      "created_at": "2026-07-01T12:43:23.064Z"
-    },
-    {
-      "id": "032bc153-ca3d-49f1-b0ba-01551178f697",
-      "type": "mcq",
-      "question": "Architecto eligendi",
-      "option1": "Corrupti aut sit n",
-      "option2": "Exercitation ut ea q",
-      "option3": "Velit nesciunt aspe",
-      "option4": "Aspernatur sit a do",
-      "correct_option": "option3",
-      "explanation": "Perferendis voluptat",
-      "difficulty": "medium",
-      "test_id": "b4d284a9-395c-432b-8727-ff3ba0b96383",
-      "topic_id": "topic-2-1",
-      "sub_topic_id": "subtopic-2-1-2",
-      "media_url": "http://localhost:5174/test/b4d284a9-395c-432b-8727-ff3ba0b96383/questions",
-      "created_at": "2026-07-01T12:56:38.206Z"
-    },
-    {
-      "id": "1fd3d4e1-58ff-4c7b-a600-87542eafbc72",
-      "type": "mcq",
-      "question": "In officia repellend",
-      "option1": "Distinctio Totam mi",
-      "option2": "Eius cum aut vero vo",
-      "option3": "Id dolorum sed alia",
-      "option4": "Delectus qui minima",
-      "correct_option": "option2",
-      "explanation": "Est reprehenderit n",
-      "difficulty": "medium",
-      "test_id": "b4d284a9-395c-432b-8727-ff3ba0b96383",
-      "topic_id": "topic-2-1",
-      "sub_topic_id": "subtopic-2-1-2",
-      "media_url": "http://localhost:5174/test/b4d284a9-395c-432b-8727-ff3ba0b96383/questions",
-      "created_at": "2026-07-01T12:56:38.206Z"
-    },
-    {
-      "id": "a75f91c0-fdc1-485d-9227-a2119ffc5701",
-      "type": "mcq",
-      "question": "Veritatis minim quas",
-      "option1": "Ut nobis tempore of",
-      "option2": "Nemo tempor et quam",
-      "option3": "Reprehenderit cillu",
-      "option4": "Ad illum voluptatem",
-      "correct_option": "option1",
-      "explanation": "Enim blanditiis mole",
-      "difficulty": "easy",
-      "test_id": "b4d284a9-395c-432b-8727-ff3ba0b96383",
-      "topic_id": "topic-2-1",
-      "sub_topic_id": "subtopic-2-1-2",
-      "media_url": "http://localhost:5174/test/b4d284a9-395c-432b-8727-ff3ba0b96383/questions",
-      "created_at": "2026-07-01T12:56:38.206Z"
-    },
     {
       "id": "d35c43e5-a80b-4f94-a438-ac4045d21567",
       "type": "mcq",
@@ -488,6 +357,40 @@
       "sub_topic_id": "subtopic-1-2-1",
       "media_url": "http://localhost:5174/test/6adc6b45-9afd-4491-9d4f-3446ce620d46/questions",
       "created_at": "2026-07-01T18:09:39.491Z"
+    },
+    {
+      "id": "e5ee86a5-6c34-4e02-8a2e-6344c873e1a0",
+      "type": "mcq",
+      "question": "Omnis ut dignissimos",
+      "option1": "Autem ab consequatur",
+      "option2": "Culpa et rem fugiat",
+      "option3": "Pariatur Reprehende",
+      "option4": "Dolores animi tempo",
+      "correct_option": "option3",
+      "explanation": "Dolore impedit cupi",
+      "difficulty": "medium",
+      "test_id": "0701869e-ce51-4764-9aa9-ffee8ac68937",
+      "topic_id": "topic-3-2",
+      "sub_topic_id": "subtopic-3-2-2",
+      "media_url": "http://localhost:5174/test/0701869e-ce51-4764-9aa9-ffee8ac68937/questions",
+      "created_at": "2026-07-02T05:26:37.754Z"
+    },
+    {
+      "id": "cea2c208-86af-4dd8-8e1b-5b750758534a",
+      "type": "mcq",
+      "question": "Vero quos amet ut i",
+      "option1": "Aut est et temporib",
+      "option2": "Fugiat iure laborum",
+      "option3": "Molestiae itaque con",
+      "option4": "Incidunt pariatur",
+      "correct_option": "option1",
+      "explanation": "Deleniti ipsum sint",
+      "difficulty": "easy",
+      "test_id": "0701869e-ce51-4764-9aa9-ffee8ac68937",
+      "topic_id": "topic-3-2",
+      "sub_topic_id": "subtopic-3-2-2",
+      "media_url": "http://localhost:5174/test/0701869e-ce51-4764-9aa9-ffee8ac68937/questions",
+      "created_at": "2026-07-02T05:26:37.754Z"
     }
   ]
 }
