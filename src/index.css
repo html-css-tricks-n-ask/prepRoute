@@ -2015,3 +2015,44 @@ select.form-input-custom {
 .mb-5 { margin-bottom: 1.25rem !important; }
 .mb-6 { margin-bottom: 1.5rem !important; }
 .mb-8 { margin-bottom: 2rem !important; }
+
+/* Responsive Grid for Preview & Publish Summary */
+.preview-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* Responsive Active Session Banner */
+.active-session-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.active-session-details {
+  display: flex;
+  gap: 24px;
+  border-left: 1px solid var(--border-color);
+  padding-left: 24px;
+}
+
+@media (max-width: 768px) {
+  .preview-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .active-session-summary {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+  .active-session-details {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--border-color);
+    padding-top: 16px;
+    justify-content: space-between;
+  }
+}

@@ -275,7 +275,7 @@ export default function AddQuestions() {
       {/* Test details banner */}
       {test && (
         <Card style={{ background: 'var(--primary-light)', borderColor: 'rgba(91,92,235,0.15)', marginBottom: '32px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
+          <div className="active-session-summary">
             <div>
               <Badge status="live" style={{ marginBottom: '16px', background: 'var(--primary)', color: 'white', border: 'none' }}>
                 Active Session
@@ -285,7 +285,7 @@ export default function AddQuestions() {
                 Subject: <strong style={{ color: 'var(--heading)' }}>{test.subject}</strong> | Difficulty: <strong style={{ color: 'var(--heading)' }}>{test.difficulty}</strong>
               </p>
             </div>
-            <div style={{ display: 'flex', gap: '24px', borderLeft: '1px solid var(--border)', paddingLeft: '24px' }}>
+            <div className="active-session-details">
               <div>
                 <div className="caption text-muted">MARKING SCHEME</div>
                 <div className="small-text" style={{ fontWeight: 600, color: 'var(--heading)' }}>+{test.correct_marks} / {test.wrong_marks}</div>

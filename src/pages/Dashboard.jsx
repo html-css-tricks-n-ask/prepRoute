@@ -226,41 +226,34 @@ export default function Dashboard() {
 
       {/* Filter and Search Bar */}
       <div className="filter-bar mb-5">
-        <div style={{ display: 'flex', flex: 1, gap: '0.75rem', minWidth: '280px' }}>
-          <div style={{ position: 'relative', width: '100%' }}>
-            <input
-              type="text"
-              placeholder="Search tests by name..."
-              className="form-control filter-input"
-              style={{ width: '100%', maxWidth: 'none' }}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </div>
+        <input
+          type="text"
+          placeholder="Search tests by name..."
+          className="form-control filter-input"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <select
-            className="form-control filter-select"
-            value={subjectFilter}
-            onChange={(e) => setSubjectFilter(e.target.value)}
-          >
-            <option value="">All Subjects</option>
-            {subjects.map(s => (
-              <option key={s.id} value={s.id}>{s.name}</option>
-            ))}
-          </select>
+        <select
+          className="form-control filter-select"
+          value={subjectFilter}
+          onChange={(e) => setSubjectFilter(e.target.value)}
+        >
+          <option value="">All Subjects</option>
+          {subjects.map(s => (
+            <option key={s.id} value={s.id}>{s.name}</option>
+          ))}
+        </select>
 
-          <select
-            className="form-control filter-select"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="">All Statuses</option>
-            <option value="draft">Draft</option>
-            <option value="live">Live</option>
-          </select>
-        </div>
+        <select
+          className="form-control filter-select"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="">All Statuses</option>
+          <option value="draft">Draft</option>
+          <option value="live">Live</option>
+        </select>
       </div>
 
       {testsError && (

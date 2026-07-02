@@ -265,9 +265,8 @@ export default function PreviewPublish() {
           </div>
 
           <div
-            className="form-grid-two-col"
+            className="preview-summary-grid"
             style={{
-              gridTemplateColumns: "repeat(3, 1fr)",
               background: "var(--primary-light)",
               padding: "24px",
               borderRadius: "12px",
