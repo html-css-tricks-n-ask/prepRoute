@@ -274,10 +274,10 @@ export default function AddQuestions() {
 
       {/* Test details banner */}
       {test && (
-        <Card className="mb-6" style={{ background: 'var(--primary-light)', borderColor: 'rgba(91,92,235,0.15)' }}>
+        <Card style={{ background: 'var(--primary-light)', borderColor: 'rgba(91,92,235,0.15)', marginBottom: '32px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
             <div>
-              <Badge status="live" style={{ marginBottom: '8px', background: 'var(--primary)', color: 'white', border: 'none' }}>
+              <Badge status="live" style={{ marginBottom: '16px', background: 'var(--primary)', color: 'white', border: 'none' }}>
                 Active Session
               </Badge>
               <h2 className="section-title" style={{ margin: 0 }}>{test.name}</h2>
