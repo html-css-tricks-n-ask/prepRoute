@@ -485,7 +485,7 @@ export default function AddQuestions() {
             </Button>
             {editingIndex !== null && (
               <Button
-                variant="outline"
+                variant="secondary"
                 onClick={() => {
                   setEditingIndex(null);
                   reset();
@@ -528,7 +528,7 @@ export default function AddQuestions() {
                       <span className="question-number" style={{ fontWeight: 600, color: 'var(--heading)' }}>Question {idx + 1}</span>
                       <div className="question-actions" style={{ display: 'flex', gap: '8px' }}>
                         <Button
-                          variant="outline"
+                          variant="secondary"
                           className="btn-icon"
                           onClick={() => handleEditQuestion(idx)}
                           title="Edit"
@@ -600,7 +600,7 @@ export default function AddQuestions() {
       <Card style={{ marginTop: '24px', padding: '16px 24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={() => navigate(`/test/edit/${testId}`)}
             disabled={submitting}
           >
@@ -613,7 +613,7 @@ export default function AddQuestions() {
 
           <div style={{ display: 'flex', gap: '12px' }}>
             <Button
-              variant="outline"
+              variant="secondary"
               onClick={() => navigate('/')}
               disabled={submitting}
             >

@@ -122,7 +122,7 @@ export default function PreviewPublish() {
 
             <div style={{ display: 'flex', gap: '12px' }}>
               <Button 
-                variant="outline" 
+                variant="secondary" 
                 onClick={() => navigate(`/test/edit/${testId}`)}
                 disabled={isPublishing}
               >
@@ -133,7 +133,7 @@ export default function PreviewPublish() {
                 Edit Details
               </Button>
               <Button 
-                variant="outline" 
+                variant="secondary" 
                 onClick={() => navigate(`/test/${testId}/questions`)}
                 disabled={isPublishing}
               >
@@ -272,7 +272,7 @@ export default function PreviewPublish() {
         <Card style={{ padding: '16px 24px', marginBottom: '32px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
             <Button 
-              variant="outline" 
+              variant="secondary" 
               onClick={() => navigate('/')}
               disabled={isPublishing}
             >

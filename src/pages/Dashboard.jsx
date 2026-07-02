@@ -14,7 +14,6 @@ import {
 } from '../store/apiSlice';
 import { FiPlus } from 'react-icons/fi';
 import Button from '../components/common/Button';
-import Badge from '../components/common/Badge';
 import EmptyState from '../components/common/EmptyState';
 import Card from '../components/common/Card';
 
@@ -85,15 +84,23 @@ export default function Dashboard() {
     {
       accessorKey: 'name',
       header: 'Test Name',
-      cell: (info) => <span style={{ fontWeight: 600, color: 'var(--heading)' }}>{info.getValue()}</span>,
+      cell: (info) => <span style={{ fontWeight: 600 }}>{info.getValue()}</span>,
     },
     {
       accessorKey: 'subject',
       header: 'Subject',
       cell: (info) => (
-        <Badge variant="primary" style={{ backgroundColor: 'var(--primary-light)', color: 'var(--primary)', border: '1px solid rgba(91,92,235,0.1)' }}>
+        <span style={{ 
+          padding: '0.25rem 0.5rem', 
+          background: 'var(--primary-glow)', 
+          border: '1px solid var(--border-color)',
+          borderRadius: '4px',
+          fontSize: '0.8rem',
+          fontWeight: 500,
+          color: 'var(--primary)'
+        }}>
           {info.getValue()}
-        </Badge>
+        </span>
       ),
     },
     {
@@ -101,7 +108,7 @@ export default function Dashboard() {
       header: 'Status',
       cell: (info) => {
         const status = info.getValue() || 'draft';
-        return <Badge status={status} />;
+        return <span className={`badge badge-${status}`}>{status}</span>;
       },
     },
     {
@@ -127,7 +134,7 @@ export default function Dashboard() {
         return (
           <div className="table-actions" style={{ justifyContent: 'flex-end' }}>
             <Button 
-              variant="outline" 
+              variant="secondary" 
               className="btn-icon" 
               title="View & Preview"
               onClick={() => navigate(`/test/${test.id}/preview`)}
@@ -140,7 +147,7 @@ export default function Dashboard() {
 
             {test.status !== 'live' ? (
               <Button 
-                variant="outline" 
+                variant="secondary" 
                 className="btn-icon" 
                 title="Edit Test Details"
                 onClick={() => navigate(`/test/edit/${test.id}`)}
@@ -152,7 +159,7 @@ export default function Dashboard() {
               </Button>
             ) : (
               <Button 
-                variant="outline" 
+                variant="secondary" 
                 className="btn-icon" 
                 title="Edit locked (Published)"
                 disabled

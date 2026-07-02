@@ -497,10 +497,9 @@ export default function CreateEditTest() {
           </div>
         </Card>
 
-        {/* Footer Actions */}
         <div className="form-actions-footer">
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={() => navigate('/')}
             disabled={submitting}
           >
@@ -508,10 +507,10 @@ export default function CreateEditTest() {
           </Button>
           
           <Button
-            variant="secondary"
+            variant="primary"
             onClick={handleSubmit((values) => handleFormSubmit(values, false))}
             disabled={submitting}
-            style={{ marginRight: '12px' }}
+            style={{ backgroundColor: 'rgba(30, 41, 59, 0.8)', color: '#a5b4fc', border: '1px solid rgba(99, 102, 241, 0.2)', marginRight: '1rem' }}
           >
             Save as Draft
           </Button>
