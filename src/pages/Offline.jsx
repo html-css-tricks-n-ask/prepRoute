@@ -16,7 +16,7 @@ export default function Offline() {
       backgroundColor: '#f8fafc',
       padding: '24px',
       textAlign: 'center',
-      fontFamily: "'Inter', sans-serif"
+      fontFamily: 'var(--font-sans)'
     }}>
       <div style={{
         maxWidth: '440px',

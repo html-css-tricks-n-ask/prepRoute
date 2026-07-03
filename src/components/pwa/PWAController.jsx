@@ -164,7 +164,7 @@ export default function PWAController({ onOfflineStatusChange }) {
           border: '1px solid #e5e7eb',
           zIndex: 10000,
           maxWidth: '350px',
-          fontFamily: "'Inter', sans-serif"
+          fontFamily: 'var(--font-sans)'
         }}>
           <h4 style={{ fontWeight: '700', fontSize: '0.975rem', marginBottom: '4px' }}>Update Available</h4>
           <p style={{ fontSize: '0.85rem', color: '#6b7280', marginBottom: '16px', lineHeight: '1.4' }}>
@@ -203,7 +203,7 @@ export default function PWAController({ onOfflineStatusChange }) {
           border: '1px solid #e5e7eb',
           zIndex: 10000,
           maxWidth: '350px',
-          fontFamily: "'Inter', sans-serif"
+          fontFamily: 'var(--font-sans)'
         }}>
           <h4 style={{ fontWeight: '700', fontSize: '0.975rem', marginBottom: '4px' }}>Install PrepRoute</h4>
           <p style={{ fontSize: '0.85rem', color: '#6b7280', marginBottom: '16px', lineHeight: '1.4' }}>

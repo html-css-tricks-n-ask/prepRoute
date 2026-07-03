@@ -50,7 +50,7 @@ export default function App() {
             background: '#ffffff',
             color: '#111827',
             border: '1px solid #e5e7eb',
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: 'var(--font-sans)',
             fontSize: '0.9rem',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
             borderRadius: '8px',

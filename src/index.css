@@ -1,9 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 :root {
-  --font-sans:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Google Sans", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Color Palette - Premium SaaS Light Theme */
   --bg-app: #f8fafc;
@@ -82,13 +81,7 @@ h1,
   line-height: 36px !important;
   letter-spacing: -0.02em !important;
   color: var(--text-primary) !important;
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 h2,
@@ -97,7 +90,7 @@ h2,
   font-weight: 700 !important;
   letter-spacing: -0.015em !important;
   color: var(--text-primary) !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 h3,
@@ -106,7 +99,7 @@ h3,
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
   color: var(--text-primary) !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 h4,
@@ -115,7 +108,7 @@ h6 {
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
   color: var(--text-primary) !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 .card-heading {
@@ -124,7 +117,7 @@ h6 {
   letter-spacing: 0.3px !important;
   text-transform: uppercase !important;
   color: var(--text-primary) !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
   display: block;
 }
 
@@ -134,7 +127,7 @@ label {
   font-size: 14px !important;
   font-weight: 500 !important;
   color: #6b7280 !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 body,
@@ -144,21 +137,21 @@ p,
   font-weight: 400 !important;
   color: #374151 !important;
   line-height: 1.5 !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 .primary-value {
   font-size: 18px !important;
   font-weight: 600 !important;
   color: #111827 !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 .secondary-info {
   font-size: 14px !important;
   font-weight: 500 !important;
   color: #6b7280 !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 /* Status colors mapping */
@@ -177,7 +170,7 @@ p,
 button {
   font-size: 16px !important;
   font-weight: 600 !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 /* Topic Chips Typography */
@@ -185,7 +178,7 @@ button {
   font-size: 14px !important;
   font-weight: 600 !important;
   border-radius: 999px !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 a {
