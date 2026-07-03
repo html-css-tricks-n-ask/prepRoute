@@ -1,8 +1,10 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import AdminLayout from './components/AdminLayout';
-import ProtectedRoute from './components/ProtectedRoute';
+import AdminLayout from './components/layout/AdminLayout';
+import ProtectedRoute from './components/layout/ProtectedRoute';
+import PWAController from './components/pwa/PWAController';
+import Offline from './pages/Offline';
 
 // Lazy load pages for code splitting and performance optimization
 const Login = lazy(() => import('./pages/Login'));
@@ -27,8 +29,20 @@ function PageLoader() {
 }
 
 export default function App() {
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  if (isOffline) {
+    return (
+      <>
+        <PWAController onOfflineStatusChange={setIsOffline} />
+        <Offline />
+      </>
+    );
+  }
+
   return (
     <BrowserRouter>
+      <PWAController onOfflineStatusChange={setIsOffline} />
       <Toaster 
         position="top-right" 
         toastOptions={{
@@ -46,8 +60,8 @@ export default function App() {
             iconTheme: {
               primary: '#22c55e',
               secondary: '#ffffff',
+              },
             },
-          },
           error: {
             iconTheme: {
               primary: '#ef4444',

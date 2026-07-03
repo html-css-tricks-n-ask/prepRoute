@@ -75,16 +75,24 @@ body {
 }
 
 /* Typography Reset & SaaS Scale */
-h1, .page-title {
+h1,
+.page-title {
   font-size: 28px !important;
   font-weight: 700 !important;
   line-height: 36px !important;
   letter-spacing: -0.02em !important;
   color: var(--text-primary) !important;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif !important;
 }
 
-h2, .section-title {
+h2,
+.section-title {
   font-size: 28px !important;
   font-weight: 700 !important;
   letter-spacing: -0.015em !important;
@@ -92,7 +100,8 @@ h2, .section-title {
   font-family: "Inter", sans-serif !important;
 }
 
-h3, .card-title {
+h3,
+.card-title {
   font-size: 22px !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
@@ -100,7 +109,9 @@ h3, .card-title {
   font-family: "Inter", sans-serif !important;
 }
 
-h4, h5, h6 {
+h4,
+h5,
+h6 {
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
   color: var(--text-primary) !important;
@@ -117,14 +128,18 @@ h4, h5, h6 {
   display: block;
 }
 
-.field-label, .form-label, label {
+.field-label,
+.form-label,
+label {
   font-size: 14px !important;
   font-weight: 500 !important;
-  color: #6B7280 !important;
+  color: #6b7280 !important;
   font-family: "Inter", sans-serif !important;
 }
 
-body, p, .body-text {
+body,
+p,
+.body-text {
   font-size: 16px !important;
   font-weight: 400 !important;
   color: #374151 !important;
@@ -142,23 +157,24 @@ body, p, .body-text {
 .secondary-info {
   font-size: 14px !important;
   font-weight: 500 !important;
-  color: #6B7280 !important;
+  color: #6b7280 !important;
   font-family: "Inter", sans-serif !important;
 }
 
 /* Status colors mapping */
 .status-easy {
-  color: #22C55E !important;
+  color: #22c55e !important;
 }
 .status-medium {
-  color: #F59E0B !important;
+  color: #f59e0b !important;
 }
 .status-hard {
-  color: #EF4444 !important;
+  color: #ef4444 !important;
 }
 
 /* Buttons Typography */
-.btn, button {
+.btn,
+button {
   font-size: 16px !important;
   font-weight: 600 !important;
   font-family: "Inter", sans-serif !important;
@@ -589,7 +605,8 @@ select.form-control {
 
 .table {
   width: 100%;
-  min-width: 760px;
+  min-width: 1090px;
+  table-layout: fixed;
   border-collapse: collapse;
   text-align: left;
 }
@@ -622,7 +639,7 @@ select.form-control {
   border-bottom: none;
 }
 
-.table tr:hover td {
+.table tr:not(.table-placeholder-row):hover td {
   background: #f9fafb;
 }
 
@@ -982,7 +999,6 @@ select.form-control {
 
 /* Apply smooth transition only when state changes */
 
-
 /* Ensure no outline on focus/active */
 .step-node:focus,
 .step-node:active {
@@ -990,7 +1006,6 @@ select.form-control {
   background: #ffffff;
   border-color: var(--border-color);
 }
-
 
 .step-node.active {
   border-color: var(--primary);
@@ -1061,6 +1076,7 @@ select.form-control {
 
 /* Professional Question Preview Cards */
 .question-preview-card {
+  margin-top: 10px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 16px;
@@ -2265,13 +2281,27 @@ select.form-input-custom {
 }
 
 /* Margin bottom helper classes */
-.mb-1 { margin-bottom: 0.25rem !important; }
-.mb-2 { margin-bottom: 0.5rem !important; }
-.mb-3 { margin-bottom: 0.75rem !important; }
-.mb-4 { margin-bottom: 1rem !important; }
-.mb-5 { margin-bottom: 1.25rem !important; }
-.mb-6 { margin-bottom: 1.5rem !important; }
-.mb-8 { margin-bottom: 2rem !important; }
+.mb-1 {
+  margin-bottom: 0.25rem !important;
+}
+.mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+.mb-3 {
+  margin-bottom: 0.75rem !important;
+}
+.mb-4 {
+  margin-bottom: 1rem !important;
+}
+.mb-5 {
+  margin-bottom: 1.25rem !important;
+}
+.mb-6 {
+  margin-bottom: 1.5rem !important;
+}
+.mb-8 {
+  margin-bottom: 2rem !important;
+}
 
 /* Responsive Grid for Preview & Publish Summary */
 .preview-summary-grid {
@@ -2306,7 +2336,7 @@ select.form-input-custom {
 }
 
 .pulse-indicator::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -2318,7 +2348,8 @@ select.form-input-custom {
 }
 
 @keyframes indicator-ping {
-  75%, 100% {
+  75%,
+  100% {
     transform: scale(2.5);
     opacity: 0;
   }
@@ -2497,13 +2528,13 @@ select.form-input-custom {
     gap: 12px;
     align-items: stretch;
   }
-  
+
   .add-questions-footer-right {
     flex-direction: column;
     gap: 12px;
     width: 100%;
   }
-  
+
   .add-questions-footer button,
   .add-questions-footer-right button,
   .btn-save-continue {
@@ -2559,6 +2590,7 @@ select.form-input-custom {
 .table-container-with-pagination {
   border-radius: var(--radius-card) var(--radius-card) 0 0 !important;
   border-bottom: none !important;
+  min-height: 560px;
 }
 
 .table-pagination-footer {
@@ -2620,12 +2652,12 @@ select.form-input-custom {
     padding: 1rem !important;
     text-align: center !important;
   }
-  
+
   .table-pagination-actions {
     width: 100% !important;
     gap: 12px !important;
   }
-  
+
   .table-pagination-btn {
     flex: 1 !important;
     width: 100% !important;

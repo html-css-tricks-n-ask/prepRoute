@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../store/authSlice';
+import { logout } from '../../store/authSlice';
 import { FiLayout, FiEdit, FiClock, FiMenu, FiX, FiBell, FiChevronDown, FiUser, FiSettings, FiLogOut } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import ConfirmationModal from './ConfirmationModal';
+import ConfirmationModal from '../modal/ConfirmationModal';
 
 export default function AdminLayout() {
   const { user } = useSelector((state) => state.auth);

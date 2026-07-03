@@ -1,216 +1,35 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ConfirmationModal from '../components/ConfirmationModal';
-import { 
-  useReactTable, 
-  getCoreRowModel, 
-  getPaginationRowModel,
-  flexRender 
-} from '@tanstack/react-table';
-import toast from 'react-hot-toast';
-import { 
-  useGetTestsQuery, 
-  useGetSubjectsQuery, 
-  useDeleteTestMutation 
-} from '../store/apiSlice';
-import { FiPlus } from 'react-icons/fi';
+import React from 'react';
+import ConfirmationModal from '../components/modal/ConfirmationModal';
+import { useDashboard } from '../features/dashboard/hooks/useDashboard';
+import DashboardFilters from '../features/dashboard/components/DashboardFilters';
+import TestsTable from '../features/dashboard/components/TestsTable';
+import DashboardSkeleton from '../features/dashboard/components/DashboardSkeleton';
 import Button from '../components/common/Button';
-import EmptyState from '../components/common/EmptyState';
+import EmptyState from '../components/empty/EmptyState';
 import Card from '../components/common/Card';
+import { FiPlus } from 'react-icons/fi';
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-  
-  // RTK Query fetches
-  const { data: tests = [], isLoading: testsLoading, error: testsError, refetch: refetchTests } = useGetTestsQuery();
-  const { data: subjects = [], isLoading: subjectsLoading } = useGetSubjectsQuery();
-  const [deleteTest, { isLoading: isDeleting }] = useDeleteTestMutation();
-
-  // Filter and Search States
-  const [searchQuery, setSearchQuery] = useState('');
-  const [subjectFilter, setSubjectFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-
-  // Delete modal state triggers
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [testToDelete, setTestToDelete] = useState(null);
-
-  const handleDelete = useCallback((testId, testName) => {
-    setTestToDelete({ id: testId, name: testName });
-    setIsDeleteModalOpen(true);
-  }, []);
-
-  const handleConfirmDelete = async () => {
-    if (!testToDelete) return;
-    try {
-      await deleteTest(testToDelete.id).unwrap();
-      toast.success('Test deleted successfully.');
-      refetchTests();
-      setIsDeleteModalOpen(false);
-      setTestToDelete(null);
-    } catch (err) {
-      console.error(err);
-      toast.error(err.data?.message || err.message || 'Something went wrong. Please try again.');
-    }
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-    } catch {
-      return dateString;
-    }
-  };
-
-  // Client-side filtering logic memoized
-  const filteredTests = useMemo(() => {
-    return tests.filter(test => {
-      const matchesSearch = test.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            (test.subject && test.subject.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesSubject = subjectFilter 
-        ? test.subject_id === subjectFilter || test.subject === subjectFilter 
-        : true;
-        
-      const matchesStatus = statusFilter ? test.status === statusFilter : true;
-      
-      return matchesSearch && matchesSubject && matchesStatus;
-    });
-  }, [tests, searchQuery, subjectFilter, statusFilter]);
-
-  // TanStack Table columns definition memoized
-  const columns = useMemo(() => [
-    {
-      accessorKey: 'name',
-      header: 'Test Name',
-      cell: (info) => <span style={{ fontWeight: 600 }}>{info.getValue()}</span>,
-    },
-    {
-      accessorKey: 'subject',
-      header: 'Subject',
-      cell: (info) => (
-        <span style={{ 
-          padding: '0.25rem 0.5rem', 
-          background: 'var(--primary-glow)', 
-          border: '1px solid var(--border-color)',
-          borderRadius: '4px',
-          fontSize: '0.8rem',
-          fontWeight: 500,
-          color: 'var(--primary)'
-        }}>
-          {info.getValue()}
-        </span>
-      ),
-    },
-    {
-      accessorKey: 'status',
-      header: 'Status',
-      cell: (info) => {
-        const status = info.getValue() || 'draft';
-        return <span className={`badge badge-${status}`}>{status}</span>;
-      },
-    },
-    {
-      accessorKey: 'total_questions',
-      header: 'Questions',
-      cell: (info) => `${info.getValue() || 0} Qs`,
-    },
-    {
-      accessorKey: 'total_time',
-      header: 'Duration',
-      cell: (info) => `${info.getValue() || 0} mins`,
-    },
-    {
-      accessorKey: 'created_at',
-      header: 'Created Date',
-      cell: (info) => formatDate(info.getValue()),
-    },
-    {
-      id: 'actions',
-      header: () => <div style={{ textAlign: 'right' }}>Actions</div>,
-      cell: ({ row }) => {
-        const test = row.original;
-        return (
-          <div className="table-actions" style={{ justifyContent: 'flex-end' }}>
-            <Button 
-              variant="secondary" 
-              className="btn-icon" 
-              title="View & Preview"
-              onClick={() => navigate(`/test/${test.id}/preview`)}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </Button>
-
-            {test.status !== 'live' ? (
-              <Button 
-                variant="secondary" 
-                className="btn-icon" 
-                title="Edit Test Details"
-                onClick={() => navigate(`/test/edit/${test.id}`)}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)' }}>
-                  <path d="M12 20h9"></path>
-                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                </svg>
-              </Button>
-            ) : (
-              <Button 
-                variant="secondary" 
-                className="btn-icon" 
-                title="Edit locked (Published)"
-                disabled
-                style={{ opacity: 0.25, cursor: 'not-allowed' }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-              </Button>
-            )}
-
-            <Button 
-              variant="danger" 
-              className="btn-icon" 
-              title="Delete Test"
-              onClick={() => handleDelete(test.id, test.name)}
-              disabled={isDeleting}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-              </svg>
-            </Button>
-          </div>
-        );
-      },
-    }
-  ], [navigate, handleDelete, isDeleting]);
-
-  // TanStack Table Instance
-  const table = useReactTable({
-    data: filteredTests,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: 5,
-      },
-    },
-  });
-
-  const pageSize = table.getState().pagination.pageSize;
-  const pageIndex = table.getState().pagination.pageIndex;
-  const totalItems = filteredTests.length;
-  const fromItem = totalItems === 0 ? 0 : pageIndex * pageSize + 1;
-  const toItem = Math.min((pageIndex + 1) * pageSize, totalItems);
-
-  const loading = testsLoading || subjectsLoading;
+  const {
+    navigate,
+    tests,
+    subjects,
+    loading,
+    testsError,
+    isDeleting,
+    searchQuery,
+    setSearchQuery,
+    subjectFilter,
+    setSubjectFilter,
+    statusFilter,
+    setStatusFilter,
+    isDeleteModalOpen,
+    setIsDeleteModalOpen,
+    testToDelete,
+    handleDelete,
+    handleConfirmDelete,
+    filteredTests
+  } = useDashboard();
 
   return (
     <div>
@@ -238,36 +57,15 @@ export default function Dashboard() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="filter-bar mb-5">
-        <input
-          type="text"
-          placeholder="Search tests by name..."
-          className="form-control filter-input"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        
-        <select
-          className="form-control filter-select"
-          value={subjectFilter}
-          onChange={(e) => setSubjectFilter(e.target.value)}
-        >
-          <option value="">All Subjects</option>
-          {subjects.map(s => (
-            <option key={s.id} value={s.id}>{s.name}</option>
-          ))}
-        </select>
-
-        <select
-          className="form-control filter-select"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="">All Statuses</option>
-          <option value="draft">Draft</option>
-          <option value="live">Live</option>
-        </select>
-      </div>
+      <DashboardFilters
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        subjectFilter={subjectFilter}
+        setSubjectFilter={setSubjectFilter}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        subjects={subjects}
+      />
 
       {testsError && (
         <div style={{
@@ -283,32 +81,7 @@ export default function Dashboard() {
       )}
 
       {loading ? (
-        <Card className="skeleton-pulse">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '1rem' }}>
-              <div className="skeleton-line" style={{ width: '30%' }}></div>
-              <div className="skeleton-line" style={{ width: '15%' }}></div>
-              <div className="skeleton-line" style={{ width: '10%' }}></div>
-              <div className="skeleton-line" style={{ width: '15%' }}></div>
-              <div className="skeleton-line" style={{ width: '15%' }}></div>
-              <div className="skeleton-line" style={{ width: '15%', marginLeft: 'auto' }}></div>
-            </div>
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border)' }}>
-                <div className="skeleton-line" style={{ width: '30%', height: '20px' }}></div>
-                <div className="skeleton-line" style={{ width: '15%' }}></div>
-                <div className="skeleton-line" style={{ width: '10%' }}></div>
-                <div className="skeleton-line" style={{ width: '15%' }}></div>
-                <div className="skeleton-line" style={{ width: '15%' }}></div>
-                <div style={{ marginLeft: 'auto', display: 'flex', gap: '0.5rem' }}>
-                  <div className="skeleton-circle" style={{ width: '32px', height: '32px' }}></div>
-                  <div className="skeleton-circle" style={{ width: '32px', height: '32px' }}></div>
-                  <div className="skeleton-circle" style={{ width: '32px', height: '32px' }}></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
+        <DashboardSkeleton />
       ) : filteredTests.length === 0 ? (
         <Card style={{ padding: '64px 32px' }}>
           <EmptyState
@@ -333,65 +106,12 @@ export default function Dashboard() {
           />
         </Card>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div className="table-container table-container-with-pagination">
-            <table className="table">
-              <thead>
-                {table.getHeaderGroups().map(headerGroup => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map(header => (
-                      <th key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map(row => (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map(cell => (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="table-pagination-footer">
-            <div className="table-pagination-info">
-              Showing <strong>{fromItem}–{toItem}</strong> of <strong>{totalItems}</strong> tests
-            </div>
-            <div className="table-pagination-actions">
-              <Button
-                variant="secondary"
-                className="table-pagination-btn"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                Previous
-              </Button>
-              <Button
-                variant="secondary"
-                className="table-pagination-btn"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        </div>
+        <TestsTable
+          filteredTests={filteredTests}
+          handleDelete={handleDelete}
+          isDeleting={isDeleting}
+          navigate={navigate}
+        />
       )}
     </div>
   );
