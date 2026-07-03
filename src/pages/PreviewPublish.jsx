@@ -206,19 +206,13 @@ export default function PreviewPublish() {
                 status={test.status || "draft"}
                 style={{ marginBottom: "8px" }}
               />
-              <h1 className="page-title">{test.name}</h1>
-              <p
-                className="small-text text-muted"
-                style={{ margin: "4px 0 0 0" }}
-              >
-                Subject:{" "}
-                <strong style={{ color: "var(--heading)" }}>
-                  {test.subject}
-                </strong>
-              </p>
+              <h1 className="page-title" style={{ margin: "0 0 8px 0" }}>{test.name}</h1>
+              <div className="secondary-info">
+                Subject: <strong className="primary-value">{test.subject}</strong>
+              </div>
             </div>
 
-            <div style={{ display: "flex", gap: "12px" }}>
+            <div className="preview-header-actions">
               <Button
                 variant="secondary"
                 onClick={() => navigate(`/test/edit/${testId}`)}
@@ -267,125 +261,69 @@ export default function PreviewPublish() {
           <div
             className="preview-summary-grid"
             style={{
-              background: "var(--primary-light)",
+              background: "#f8fafc",
               padding: "24px",
-              borderRadius: "12px",
-              border: "1px solid rgba(91,92,235,0.15)",
+              borderRadius: "16px",
+              border: "1px solid var(--border-color)",
+              boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.02)",
             }}
           >
-            <div>
-              <span
-                className="caption text-muted"
-                style={{
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                  display: "block",
-                  marginBottom: "4px",
-                }}
-              >
-                Parameters
-              </span>
-              <div
-                className="small-text"
-                style={{
-                  fontWeight: 600,
-                  color: "var(--heading)",
-                  lineHeight: "1.6",
-                }}
-              >
-                Type:{" "}
-                <span
-                  style={{
-                    color: "var(--primary)",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {test.type}
-                </span>{" "}
-                <br />
-                Difficulty:{" "}
-                <span
-                  style={{
-                    color: "var(--primary)",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {test.difficulty}
-                </span>
+            <div className="preview-summary-column">
+              <span className="card-heading" style={{ marginBottom: "16px" }}>Parameters</span>
+              <div className="preview-summary-list">
+                <div className="preview-summary-item">
+                  <span className="field-label">Subject</span>
+                  <span className="primary-value">{test.subject}</span>
+                </div>
+                <div className="preview-summary-item">
+                  <span className="field-label">Type</span>
+                  <span className="primary-value" style={{ textTransform: "capitalize" }}>{test.type}</span>
+                </div>
+                <div className="preview-summary-item">
+                  <span className="field-label">Difficulty</span>
+                  <span
+                    className={`primary-value status-${test.difficulty?.toLowerCase()}`}
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    {test.difficulty}
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div>
-              <span
-                className="caption text-muted"
-                style={{
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                  display: "block",
-                  marginBottom: "4px",
-                }}
-              >
-                Marking Scheme
-              </span>
-              <div
-                className="small-text"
-                style={{
-                  fontWeight: 600,
-                  color: "var(--heading)",
-                  lineHeight: "1.6",
-                }}
-              >
-                Correct:{" "}
-                <span style={{ color: "var(--success)" }}>
-                  +{test.correct_marks}
-                </span>{" "}
-                <br />
-                Incorrect:{" "}
-                <span style={{ color: "var(--danger)" }}>
-                  {test.wrong_marks}
-                </span>{" "}
-                <br />
-                Unattempted:{" "}
-                <span style={{ color: "var(--body-text)" }}>
-                  {test.unattempt_marks}
-                </span>
+            <div className="preview-summary-column">
+              <span className="card-heading" style={{ marginBottom: "16px" }}>Marking Scheme</span>
+              <div className="preview-summary-list">
+                <div className="preview-summary-item">
+                  <span className="field-label">Correct</span>
+                  <span className="primary-value status-easy">+{test.correct_marks}</span>
+                </div>
+                <div className="preview-summary-item">
+                  <span className="field-label">Incorrect</span>
+                  <span className="primary-value status-hard">{test.wrong_marks}</span>
+                </div>
+                <div className="preview-summary-item">
+                  <span className="field-label">Unattempted</span>
+                  <span className="primary-value">{test.unattempt_marks}</span>
+                </div>
               </div>
             </div>
 
-            <div>
-              <span
-                className="caption text-muted"
-                style={{
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                  display: "block",
-                  marginBottom: "4px",
-                }}
-              >
-                Totals Summary
-              </span>
-              <div
-                className="small-text"
-                style={{
-                  fontWeight: 600,
-                  color: "var(--heading)",
-                  lineHeight: "1.6",
-                }}
-              >
-                Questions:{" "}
-                <span style={{ color: "var(--primary)" }}>
-                  {questions.length} Qs
-                </span>{" "}
-                <br />
-                Time Limit:{" "}
-                <span style={{ color: "var(--primary)" }}>
-                  {test.total_time} mins
-                </span>{" "}
-                <br />
-                Max Score:{" "}
-                <span style={{ color: "var(--primary)" }}>
-                  {test.total_marks} Marks
-                </span>
+            <div className="preview-summary-column">
+              <span className="card-heading" style={{ marginBottom: "16px" }}>Totals Summary</span>
+              <div className="preview-summary-list">
+                <div className="preview-summary-item">
+                  <span className="field-label">Questions</span>
+                  <span className="primary-value">{questions.length} Qs</span>
+                </div>
+                <div className="preview-summary-item">
+                  <span className="field-label">Time Limit</span>
+                  <span className="primary-value">{test.total_time} mins</span>
+                </div>
+                <div className="preview-summary-item">
+                  <span className="field-label">Max Score</span>
+                  <span className="primary-value">{test.total_marks} Marks</span>
+                </div>
               </div>
             </div>
           </div>
@@ -393,9 +331,8 @@ export default function PreviewPublish() {
           {test.topics && test.topics.length > 0 && (
             <div style={{ marginTop: "24px" }}>
               <span
-                className="caption text-muted"
+                className="secondary-info"
                 style={{
-                  fontWeight: 500,
                   display: "block",
                   marginBottom: "8px",
                 }}
@@ -407,10 +344,11 @@ export default function PreviewPublish() {
                   <Badge
                     key={`t-${i}`}
                     status="draft"
+                    className="topic-chip"
                     style={{
                       background: "var(--primary-light)",
                       color: "var(--primary)",
-                      border: "1px solid rgba(91,92,235,0.1)",
+                      border: "1px solid rgba(91,92,235,0.15)",
                     }}
                   >
                     {t}
@@ -421,6 +359,7 @@ export default function PreviewPublish() {
                     <Badge
                       key={`st-${i}`}
                       status="draft"
+                      className="topic-chip"
                       style={{
                         background: "rgba(124, 58, 237, 0.1)",
                         color: "var(--primary)",
@@ -584,14 +523,7 @@ export default function PreviewPublish() {
 
         {/* Action Footer */}
         <Card style={{ padding: "16px 24px", marginBottom: "32px" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
+          <div className="preview-footer-actions">
             <Button
               variant="secondary"
               onClick={() => navigate("/")}

@@ -274,29 +274,72 @@ export default function AddQuestions() {
 
       {/* Test details banner */}
       {test && (
-        <Card style={{ background: 'var(--primary-light)', borderColor: 'rgba(91,92,235,0.15)', marginBottom: '32px' }}>
+        <Card style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)', borderColor: 'rgba(91,92,235,0.15)', borderLeft: '4px solid var(--primary)', marginBottom: '32px' }}>
           <div className="active-session-summary">
             <div>
-              <Badge status="live" style={{ marginBottom: '16px', background: 'var(--primary)', color: 'white', border: 'none' }}>
-                Active Session
-              </Badge>
-              <h2 className="section-title" style={{ margin: 0 }}>{test.name}</h2>
-              <p className="small-text text-muted" style={{ margin: '4px 0 0 0' }}>
-                Subject: <strong style={{ color: 'var(--heading)' }}>{test.subject}</strong> | Difficulty: <strong style={{ color: 'var(--heading)' }}>{test.difficulty}</strong>
-              </p>
+              <div className="session-status-badge">
+                <span className="pulse-indicator"></span>
+                <span className="session-badge">Active Session</span>
+              </div>
+              <h2 className="session-title">{test.name}</h2>
+              <div className="session-meta-tags">
+                <span className="meta-tag subject-tag">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginRight: '4px' }}>
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                  {test.subject}
+                </span>
+                <span className={`meta-tag difficulty-tag difficulty-${test.difficulty?.toLowerCase()}`}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginRight: '4px' }}>
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  {test.difficulty}
+                </span>
+              </div>
             </div>
+            
             <div className="active-session-details">
-              <div>
-                <div className="caption text-muted">MARKING SCHEME</div>
-                <div className="small-text" style={{ fontWeight: 600, color: 'var(--heading)' }}>+{test.correct_marks} / {test.wrong_marks}</div>
+              <div className="metric-box">
+                <div className="metric-icon" style={{ color: 'var(--success)' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="9 11 12 14 22 4"></polyline>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div className="caption text-muted">MARKING SCHEME</div>
+                  <div className="metric-value text-success">+{test.correct_marks} / {test.wrong_marks}</div>
+                </div>
               </div>
-              <div>
-                <div className="caption text-muted">DURATION</div>
-                <div className="small-text" style={{ fontWeight: 600, color: 'var(--heading)' }}>{test.total_time} mins</div>
+
+              <div className="metric-box">
+                <div className="metric-icon" style={{ color: 'var(--primary)' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+                <div>
+                  <div className="caption text-muted">DURATION</div>
+                  <div className="metric-value">{test.total_time} mins</div>
+                </div>
               </div>
-              <div>
-                <div className="caption text-muted">TOTAL Qs</div>
-                <div className="small-text" style={{ fontWeight: 600, color: 'var(--primary)' }}>{questionsList.length} Qs</div>
+
+              <div className="metric-box">
+                <div className="metric-icon" style={{ color: 'var(--secondary)' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </div>
+                <div>
+                  <div className="caption text-muted">TOTAL Qs</div>
+                  <div className="metric-value text-primary">{questionsList.length} Qs</div>
+                </div>
               </div>
             </div>
           </div>
@@ -340,7 +383,7 @@ export default function AddQuestions() {
           />
 
           {/* Options input */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px', marginTop: '16px' }}>
+          <div className="form-row-grid-2" style={{ marginTop: '16px' }}>
             <Input
               label="Option 1"
               placeholder="Option 1"
@@ -359,7 +402,7 @@ export default function AddQuestions() {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+          <div className="form-row-grid-2">
             <Input
               label="Option 3"
               placeholder="Option 3"
@@ -401,7 +444,7 @@ export default function AddQuestions() {
             Optional Question Metadata
           </h4>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+          <div className="form-row-grid-2">
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Topic</label>
               <select
@@ -439,7 +482,7 @@ export default function AddQuestions() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+          <div className="form-row-grid-2">
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Difficulty</label>
               <select
@@ -523,10 +566,10 @@ export default function AddQuestions() {
             ) : (
               <div style={{ maxHeight: '720px', overflowY: 'auto', paddingRight: '4px' }}>
                 {questionsList.map((q, idx) => (
-                  <div key={idx} className="question-item" style={{ border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '16px', background: 'var(--card-bg)' }}>
-                    <div className="question-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                      <span className="question-number" style={{ fontWeight: 600, color: 'var(--heading)' }}>Question {idx + 1}</span>
-                      <div className="question-actions" style={{ display: 'flex', gap: '8px' }}>
+                  <div key={idx} className="question-preview-card">
+                    <div className="question-header">
+                      <span className="question-number">Question {idx + 1}</span>
+                      <div className="question-actions">
                         <Button
                           variant="secondary"
                           className="btn-icon"
@@ -554,38 +597,65 @@ export default function AddQuestions() {
                       </div>
                     </div>
 
-                    <div className="question-text" style={{ fontSize: '15px', color: 'var(--heading)', marginBottom: '12px' }}>{q.question}</div>
+                    <div className="question-text">{q.question}</div>
 
-                    <div className="options-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
-                      <div className={`option-preview ${q.correct_option === 'option1' ? 'correct' : ''}`} style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}>
-                        <strong>A:</strong> {q.option1}
+                    <div className="options-grid">
+                      <div className={`option-preview-box ${q.correct_option === 'option1' ? 'correct' : ''}`}>
+                        <span className="option-prefix">A</span>
+                        <span className="option-value">{q.option1}</span>
+                        {q.correct_option === 'option1' && (
+                          <svg className="option-correct-badge" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        )}
                       </div>
-                      <div className={`option-preview ${q.correct_option === 'option2' ? 'correct' : ''}`} style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}>
-                        <strong>B:</strong> {q.option2}
+                      <div className={`option-preview-box ${q.correct_option === 'option2' ? 'correct' : ''}`}>
+                        <span className="option-prefix">B</span>
+                        <span className="option-value">{q.option2}</span>
+                        {q.correct_option === 'option2' && (
+                          <svg className="option-correct-badge" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        )}
                       </div>
-                      <div className={`option-preview ${q.correct_option === 'option3' ? 'correct' : ''}`} style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}>
-                        <strong>C:</strong> {q.option3}
+                      <div className={`option-preview-box ${q.correct_option === 'option3' ? 'correct' : ''}`}>
+                        <span className="option-prefix">C</span>
+                        <span className="option-value">{q.option3}</span>
+                        {q.correct_option === 'option3' && (
+                          <svg className="option-correct-badge" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        )}
                       </div>
-                      <div className={`option-preview ${q.correct_option === 'option4' ? 'correct' : ''}`} style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}>
-                        <strong>D:</strong> {q.option4}
+                      <div className={`option-preview-box ${q.correct_option === 'option4' ? 'correct' : ''}`}>
+                        <span className="option-prefix">D</span>
+                        <span className="option-value">{q.option4}</span>
+                        {q.correct_option === 'option4' && (
+                          <svg className="option-correct-badge" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        )}
                       </div>
                     </div>
 
-                    <div className="question-meta" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <div className="question-meta-row">
                       {q.difficulty && (
-                        <Badge status="draft" style={{ textTransform: 'capitalize' }}>
+                        <span className={`meta-pill difficulty-pill difficulty-${q.difficulty?.toLowerCase()}`}>
                           Difficulty: {q.difficulty}
-                        </Badge>
+                        </span>
                       )}
                       {q.topic_id && (
-                        <Badge status="draft">
+                        <span className="meta-pill topic-pill">
                           Topic: {allTopics.find(t => t.id === q.topic_id)?.name || 'Custom'}
-                        </Badge>
+                        </span>
                       )}
                       {q.media_url && (
-                        <Badge status="live" style={{ background: 'var(--primary-light)', color: 'var(--primary)', border: 'none' }}>
-                          📎 Attachment
-                        </Badge>
+                        <span className="meta-pill attachment-pill">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginRight: '4px' }}>
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                          </svg>
+                          Attachment
+                        </span>
                       )}
                     </div>
                   </div>
@@ -598,7 +668,7 @@ export default function AddQuestions() {
 
       {/* Navigation Footer */}
       <Card style={{ marginTop: '24px', padding: '16px 24px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+        <div className="add-questions-footer">
           <Button
             variant="secondary"
             onClick={() => navigate(`/test/edit/${testId}`)}
@@ -611,7 +681,7 @@ export default function AddQuestions() {
             Back to Details
           </Button>
 
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div className="add-questions-footer-right">
             <Button
               variant="secondary"
               onClick={() => navigate('/')}
@@ -624,7 +694,7 @@ export default function AddQuestions() {
               variant="primary"
               onClick={handleSaveAndContinue}
               isLoading={submitting}
-              style={{ minWidth: '160px' }}
+              className="btn-save-continue"
             >
               Save & Continue
             </Button>

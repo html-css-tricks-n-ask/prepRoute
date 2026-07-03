@@ -4,6 +4,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import { 
   useReactTable, 
   getCoreRowModel, 
+  getPaginationRowModel,
   flexRender 
 } from '@tanstack/react-table';
 import toast from 'react-hot-toast';
@@ -195,7 +196,19 @@ export default function Dashboard() {
     data: filteredTests,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 5,
+      },
+    },
   });
+
+  const pageSize = table.getState().pagination.pageSize;
+  const pageIndex = table.getState().pagination.pageIndex;
+  const totalItems = filteredTests.length;
+  const fromItem = totalItems === 0 ? 0 : pageIndex * pageSize + 1;
+  const toItem = Math.min((pageIndex + 1) * pageSize, totalItems);
 
   const loading = testsLoading || subjectsLoading;
 
@@ -320,39 +333,64 @@ export default function Dashboard() {
           />
         </Card>
       ) : (
-        <div className="table-container">
-          <table className="table">
-            <thead>
-              {table.getHeaderGroups().map(headerGroup => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map(header => (
-                    <th key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map(row => (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map(cell => (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="table-container table-container-with-pagination">
+            <table className="table">
+              <thead>
+                {table.getHeaderGroups().map(headerGroup => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map(header => (
+                      <th key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map(row => (
+                  <tr key={row.id}>
+                    {row.getVisibleCells().map(cell => (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="table-pagination-footer">
+            <div className="table-pagination-info">
+              Showing <strong>{fromItem}–{toItem}</strong> of <strong>{totalItems}</strong> tests
+            </div>
+            <div className="table-pagination-actions">
+              <Button
+                variant="secondary"
+                className="table-pagination-btn"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="secondary"
+                className="table-pagination-btn"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>
