@@ -1,4 +1,5 @@
-import React, { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const Input = forwardRef(({
   label,
@@ -11,6 +12,11 @@ const Input = forwardRef(({
   style = {},
   ...props
 }, ref) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const isPassword = type === 'password';
+  const currentType = isPassword ? (showPassword ? 'text' : 'password') : type;
+
   return (
     <div className={`form-group ${className}`.trim()} style={style}>
       {label && (
@@ -18,15 +24,29 @@ const Input = forwardRef(({
           {label}
         </label>
       )}
-      <input
-        ref={ref}
-        type={type}
-        id={id}
-        disabled={disabled}
-        placeholder={placeholder}
-        className={`form-control ${error ? 'error' : ''}`.trim()}
-        {...props}
-      />
+      <div className="input-wrapper">
+        <input
+          ref={ref}
+          type={currentType}
+          id={id}
+          disabled={disabled}
+          placeholder={placeholder}
+          className={`form-control ${error ? 'error' : ''}`.trim()}
+          style={isPassword ? { paddingRight: '2.75rem' } : {}}
+          {...props}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            className="password-toggle-btn"
+            onClick={() => setShowPassword(!showPassword)}
+            disabled={disabled}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+          </button>
+        )}
+      </div>
       {error && (
         <span className="form-error" role="alert">
           {error}

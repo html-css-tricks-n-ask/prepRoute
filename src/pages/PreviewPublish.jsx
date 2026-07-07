@@ -1,4 +1,3 @@
-import React from 'react';
 import { usePreviewPublish } from '../features/preview/hooks/usePreviewPublish';
 import PublishSuccessBanner from '../features/preview/components/PublishSuccessBanner';
 import PreviewOverview from '../features/preview/components/PreviewOverview';
@@ -6,6 +5,7 @@ import QuestionsPreviewList from '../features/preview/components/QuestionsPrevie
 import StepIndicator from '../components/stepper/StepIndicator';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
+import ErrorBanner from '../components/feedback/ErrorBanner';
 
 export default function PreviewPublish() {
   const {
@@ -58,20 +58,7 @@ export default function PreviewPublish() {
   }
 
   if (testError || !test) {
-    return (
-      <div
-        style={{
-          background: 'rgba(239, 68, 68, 0.15)',
-          border: '1px solid rgba(239, 68, 68, 0.3)',
-          borderRadius: 'var(--radius-md)',
-          color: '#fca5a5',
-          padding: '1rem',
-          marginBottom: '1.5rem',
-        }}
-      >
-        Failed to load test details for review.
-      </div>
-    );
+    return <ErrorBanner message="Failed to load test details for review." />;
   }
 
   if (isPublished) {

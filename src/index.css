@@ -2,7 +2,9 @@
 @import "tailwindcss";
 
 :root {
-  --font-sans: "Google Sans", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans:
+    "Google Sans", "Geist", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
 
   /* Color Palette - Premium SaaS Light Theme */
   --bg-app: #f8fafc;
@@ -416,6 +418,41 @@ a:hover {
   text-align: left;
 }
 
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.password-toggle-btn:hover {
+  color: var(--primary);
+}
+
+.password-toggle-btn:focus-visible {
+  box-shadow: 0 0 0 2px var(--primary-glow);
+}
+
+.password-toggle-btn:active {
+  transform: translateY(-50%) scale(0.9);
+}
+
 .form-control.error {
   border-color: var(--error) !important;
 }
@@ -598,7 +635,8 @@ select.form-control {
 
 .table {
   width: 100%;
-  min-width: 1090px;
+  /* Minimum wide enough so no column collapses; container scrolls if needed */
+  min-width: 860px;
   table-layout: fixed;
   border-collapse: collapse;
   text-align: left;
@@ -607,25 +645,33 @@ select.form-control {
 .table th,
 .table td {
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
 }
 
 .table th {
-  background: #f8fafc; /* #F8FAFC header background */
-  padding: 1rem 1.25rem;
+  background: #f8fafc;
+  /* 8px top/bottom keeps header compact; 16px left/right for breathing room */
+  padding: 8px 16px;
   font-weight: 600;
-  font-size: 0.85rem;
-  color: #6b7280; /* #6B7280 header text */
+  font-size: 0.78rem;
+  color: #6b7280;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   border-bottom: 1px solid var(--border-color);
+  /* Prevent header text from wrapping */
+  white-space: nowrap;
 }
 
 .table td {
-  padding: 1.25rem;
+  /* 8px vertical padding gives a denser, elegant row height (~48px) */
+  padding: 8px 16px;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-primary);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   background: #ffffff;
+  line-height: 1.4;
 }
 
 .table tr:last-child td {
@@ -636,9 +682,26 @@ select.form-control {
   background: #f9fafb;
 }
 
+/* Column alignment utilities */
+.table .col-center th,
+.table .col-center td,
+th.col-center,
+td.col-center {
+  text-align: center;
+}
+
+.table .col-right th,
+.table .col-right td,
+th.col-right,
+td.col-right {
+  text-align: right;
+}
+
 .table-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 /* Grid Layouts */
@@ -712,7 +775,7 @@ select.form-control {
 
 .login-illustration-pane {
   flex: 1;
-  background-color: #f8fafc;
+  background-color: #f7fbff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1487,14 +1550,21 @@ svg circle {
 }
 
 .admin-topbar {
-  height: 70px;
+  height: 64px;
   background-color: #ffffff;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1.5rem;
+  padding: 0 24px;
   flex-shrink: 0;
+  position: relative;
+}
+
+.topbar-left-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .hamburger-btn {
@@ -1503,10 +1573,12 @@ svg circle {
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  padding: 6px;
+  width: 44px;
+  height: 44px;
   border-radius: 6px;
   align-items: center;
   justify-content: center;
+  padding: 0;
 }
 
 .hamburger-btn:hover {
@@ -1524,7 +1596,7 @@ svg circle {
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
   margin-left: auto;
 }
 
@@ -1997,6 +2069,9 @@ select.form-input-custom {
   .sidebar-item-icon {
     font-size: 1.4rem;
   }
+  .admin-topbar {
+    padding: 0 20px;
+  }
 }
 
 /* Mobile Sidebar Drawer Layout (< 768px screens) */
@@ -2025,24 +2100,33 @@ select.form-input-custom {
   }
   .hamburger-btn {
     display: flex;
-    margin-right: 0.75rem;
+    margin-right: 0;
   }
   .mobile-header-logo {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .profile-info {
     display: none;
   }
   .admin-topbar {
-    padding: 0 1rem;
+    padding: 0 16px;
   }
   .topbar-right {
-    gap: 0.75rem;
+    gap: 12px;
   }
 
   /* Compact content area on mobile */
   .admin-content-area {
     padding: 1.5rem 1rem;
+  }
+
+  /* Make touch targets comfortably large on mobile */
+  .test-card-btn.btn-icon {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
   }
 }
 
@@ -2498,6 +2582,123 @@ select.form-input-custom {
   }
 }
 
+/* ============================================================
+   Add Questions — split-pane layout
+   ============================================================ */
+
+/* Page root: flex column, fills the scrollable admin-content-area */
+.add-questions-page {
+  display: flex;
+  flex-direction: column;
+  /* fill the scrollable content area height */
+  min-height: calc(100vh - 70px); /* 70px = admin topbar */
+  overflow: hidden;
+  /* bottom breathing room so sticky footer never covers content */
+  padding-bottom: 76px;
+}
+
+/* Sticky top block: stepper + active-session banner */
+.add-questions-sticky-header {
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--bg-app);
+  padding-bottom: 0;
+}
+
+/* The banner already has marginBottom: 32px; cancel it here so
+   there is no gap between the sticky header and the panes */
+.add-questions-sticky-header .card:last-child {
+  margin-bottom: 0;
+}
+
+/* Split-pane row: fills remaining height, never scrolls as a whole */
+.add-questions-split-pane {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  min-height: 0; /* critical: allow children to shrink below content size */
+  overflow: hidden;
+  padding-bottom: 0;
+}
+
+/* ---- Question Builder (left) ---- */
+.question-builder-pane {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* card itself does not scroll */
+  padding: 24px;
+}
+
+/* All form content above the submit button scrolls */
+.question-builder-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+  /* small gap so content doesn't touch the pinned button */
+  padding-bottom: 8px;
+}
+
+/* Submit / Update Question button — always visible at bottom of left pane */
+.question-builder-actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 4px;
+}
+
+/* ---- Questions List (right) ---- */
+.questions-list-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.question-list-pane {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 24px;
+}
+
+/* The list of question cards scrolls independently */
+.question-list-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* ---- Responsive: collapse to single column on tablet/mobile ---- */
+@media (max-width: 1023px) {
+  .add-questions-split-pane {
+    flex-direction: column;
+    overflow-y: auto; /* single-column: page scrolls naturally */
+    overflow-x: hidden;
+  }
+  .question-builder-pane,
+  .question-list-pane {
+    flex: none;
+    overflow: visible;
+    min-height: unset;
+  }
+  .question-builder-scroll,
+  .question-list-scroll {
+    overflow: visible;
+    max-height: none;
+  }
+}
+
 /* Add Questions Footer responsive layout */
 .add-questions-footer {
   display: flex;
@@ -2583,7 +2784,6 @@ select.form-input-custom {
 .table-container-with-pagination {
   border-radius: var(--radius-card) var(--radius-card) 0 0 !important;
   border-bottom: none !important;
-  min-height: 560px;
 }
 
 .table-pagination-footer {
@@ -2655,4 +2855,123 @@ select.form-input-custom {
     flex: 1 !important;
     width: 100% !important;
   }
+}
+
+/* ============================================================
+   Mobile Test Card Layout (< 768px)
+   Replaces the table view with a stacked card list on small screens.
+   ============================================================ */
+
+.test-mobile-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 1rem;
+}
+
+/* Individual card */
+.test-mobile-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+  /* Prevent horizontal overflow */
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.test-mobile-card:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Card header: test name + status badge */
+.test-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.test-card-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+  flex: 1;
+  min-width: 0;
+  /* Allow long names to wrap on mobile */
+  white-space: normal;
+}
+
+/* Subject badge */
+.test-card-subject {
+  display: flex;
+}
+
+.test-card-subject-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  background: var(--primary-glow);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+/* Metadata: Questions / Duration / Created */
+.test-card-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.test-card-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.test-card-meta-item dt {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.test-card-meta-item dd {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Card footer: action buttons */
+.test-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.test-card-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+/* Mobile pagination — reuse desktop footer styles but full-width */
+.test-mobile-pagination {
+  margin-top: 4px;
+  border-radius: var(--radius-card) !important;
+  border: 1px solid var(--border-color) !important;
 }

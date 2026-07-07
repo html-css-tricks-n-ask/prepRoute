@@ -1,4 +1,3 @@
-import React from 'react';
 import ConfirmationModal from '../components/modal/ConfirmationModal';
 import { useAddQuestions } from '../features/questions/hooks/useAddQuestions';
 import ActiveSessionBanner from '../features/questions/components/ActiveSessionBanner';
@@ -6,7 +5,6 @@ import QuestionForm from '../features/questions/components/QuestionForm';
 import QuestionPreviewList from '../features/questions/components/QuestionPreviewList';
 import StepIndicator from '../components/stepper/StepIndicator';
 import Button from '../components/common/Button';
-import Card from '../components/common/Card';
 
 export default function AddQuestions() {
   const {
@@ -58,7 +56,7 @@ export default function AddQuestions() {
   }
 
   return (
-    <div>
+    <div className="add-questions-page">
       <ConfirmationModal
         isOpen={isDeleteConfirmOpen}
         onClose={cancelDelete}
@@ -70,14 +68,15 @@ export default function AddQuestions() {
         isDestructive={true}
         isLoading={false}
       />
-      
-      {/* Wizard Steps Indicator */}
-      <StepIndicator activeStep={2} testId={testId} navigate={navigate} />
 
-      {/* Test details banner */}
-      <ActiveSessionBanner test={test} questionsCount={questionsList.length} />
+      {/* Sticky top: stepper + session banner */}
+      <div className="add-questions-sticky-header">
+        <StepIndicator activeStep={2} testId={testId} navigate={navigate} />
+        <ActiveSessionBanner test={test} questionsCount={questionsList.length} />
+      </div>
 
-      <div className="form-grid-two-col" style={{ alignItems: 'start', gap: '24px' }}>
+      {/* Split-pane: Question Builder | Questions List */}
+      <div className="add-questions-split-pane">
         
         {/* Left Side: Question Builder Form */}
         <QuestionForm
@@ -105,7 +104,7 @@ export default function AddQuestions() {
         />
 
         {/* Right Side: Questions Preview Queue */}
-        <div style={{ flex: 1 }}>
+        <div className="questions-list-col">
           <QuestionPreviewList
             questionsList={questionsList}
             handleEditQuestion={handleEditQuestion}
@@ -115,41 +114,38 @@ export default function AddQuestions() {
         </div>
       </div>
 
-      {/* Navigation Footer */}
-      <Card style={{ marginTop: '24px', padding: '16px 24px' }}>
-        <div className="add-questions-footer">
-          <Button
-            variant="secondary"
-            onClick={() => navigate(`/test/edit/${testId}`)}
-            disabled={submitting}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
-              <line x1="19" y1="12" x2="5" y2="12"></line>
-              <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            Back to Details
-          </Button>
+      {/* Navigation Footer — fixed bar */}
+      <div className="form-actions-footer">
+        <Button
+          variant="secondary"
+          onClick={() => navigate(`/test/edit/${testId}`)}
+          disabled={submitting}
+          style={{ marginRight: 'auto' }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back to Details
+        </Button>
 
-          <div className="add-questions-footer-right">
-            <Button
-              variant="secondary"
-              onClick={() => navigate('/')}
-              disabled={submitting}
-            >
-              Exit to Dashboard
-            </Button>
-            
-            <Button
-              variant="primary"
-              onClick={handleSaveAndContinue}
-              isLoading={submitting}
-              className="btn-save-continue"
-            >
-              Save & Continue
-            </Button>
-          </div>
-        </div>
-      </Card>
+        <Button
+          variant="secondary"
+          onClick={() => navigate('/')}
+          disabled={submitting}
+        >
+          Exit to Dashboard
+        </Button>
+
+        <Button
+          variant="primary"
+          onClick={handleSaveAndContinue}
+          isLoading={submitting}
+          className="btn-save-continue"
+        >
+          Save &amp; Continue
+        </Button>
+      </div>
     </div>
   );
 }

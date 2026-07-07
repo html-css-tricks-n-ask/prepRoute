@@ -54,7 +54,6 @@ export function useTestForm() {
   const subject = watch('subject');
   const type = watch('type');
   const selectedTopics = watch('topics') || [];
-  const selectedTopicsKey = JSON.stringify(selectedTopics);
   const selectedSubTopics = watch('sub_topics') || [];
   const correctMarks = watch('correct_marks') || 0;
   const wrongMarks = watch('wrong_marks') || 0;
@@ -90,8 +89,9 @@ export function useTestForm() {
     if (selectedTopics.length > 0) {
       getSubTopicsMulti(selectedTopics);
     }
+    // selectedTopics is serialized to avoid referential inequality triggering re-runs
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTopicsKey, getSubTopicsMulti]);
+  }, [JSON.stringify(selectedTopics), getSubTopicsMulti]);
 
   // Calculate total marks dynamically
   const totalMarks = Number(totalQuestions) * Number(correctMarks);

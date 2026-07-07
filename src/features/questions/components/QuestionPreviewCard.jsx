@@ -1,7 +1,7 @@
-import React from 'react';
+import { memo } from 'react';
 import Button from '../../../components/common/Button';
 
-export default function QuestionPreviewCard({
+function QuestionPreviewCard({
   q,
   idx,
   handleEditQuestion,
@@ -104,3 +104,5 @@ export default function QuestionPreviewCard({
     </div>
   );
 }
+
+export default memo(QuestionPreviewCard);

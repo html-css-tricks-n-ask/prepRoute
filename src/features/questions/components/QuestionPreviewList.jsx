@@ -1,4 +1,3 @@
-import React from 'react';
 import Badge from '../../../components/common/Badge';
 import EmptyState from '../../../components/empty/EmptyState';
 import QuestionPreviewCard from './QuestionPreviewCard';
@@ -10,8 +9,8 @@ export default function QuestionPreviewList({
   allTopics
 }) {
   return (
-    <div className="card" style={{ minHeight: '400px', padding: '24px' }}>
-      <h3 className="card-title mb-4" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className="card question-list-pane">
+      <h3 className="card-title mb-4" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
         <span>Questions List</span>
         <Badge status="live" style={{ background: 'var(--primary-light)', color: 'var(--primary)', border: 'none' }}>
           {questionsList.length} Added
@@ -31,7 +30,7 @@ export default function QuestionPreviewList({
           }
         />
       ) : (
-        <div style={{ maxHeight: '720px', overflowY: 'auto', paddingRight: '4px' }}>
+        <div className="question-list-scroll">
           {questionsList.map((q, idx) => (
             <QuestionPreviewCard
               key={idx}

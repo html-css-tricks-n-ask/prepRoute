@@ -1,4 +1,3 @@
-import React from 'react';
 import Card from '../../../components/common/Card';
 import EmptyState from '../../../components/empty/EmptyState';
 import Badge from '../../../components/common/Badge';

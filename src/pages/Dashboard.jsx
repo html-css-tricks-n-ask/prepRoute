@@ -1,4 +1,3 @@
-import React from 'react';
 import ConfirmationModal from '../components/modal/ConfirmationModal';
 import { useDashboard } from '../features/dashboard/hooks/useDashboard';
 import DashboardFilters from '../features/dashboard/components/DashboardFilters';
@@ -7,6 +6,8 @@ import DashboardSkeleton from '../features/dashboard/components/DashboardSkeleto
 import Button from '../components/common/Button';
 import EmptyState from '../components/empty/EmptyState';
 import Card from '../components/common/Card';
+import PageHeader from '../components/common/PageHeader';
+import ErrorBanner from '../components/feedback/ErrorBanner';
 import { FiPlus } from 'react-icons/fi';
 
 export default function Dashboard() {
@@ -28,7 +29,7 @@ export default function Dashboard() {
     testToDelete,
     handleDelete,
     handleConfirmDelete,
-    filteredTests
+    filteredTests,
   } = useDashboard();
 
   return (
@@ -44,19 +45,18 @@ export default function Dashboard() {
         isDestructive={true}
         isLoading={isDeleting}
       />
-      
-      <div className="dashboard-header mb-5">
-        <div>
-          <h1 className="page-title mb-1">Tests Directory</h1>
-          <p className="small-text text-muted" style={{ margin: 0 }}>Create, manage, and publish academic tests</p>
-        </div>
-        <Button variant="primary" onClick={() => navigate('/test/create')}>
-          <FiPlus style={{ marginRight: '6px' }} size={16} />
-          Create New Test
-        </Button>
-      </div>
 
-      {/* Filter and Search Bar */}
+      <PageHeader
+        title="Tests Directory"
+        subtitle="Create, manage, and publish academic tests"
+        action={
+          <Button variant="primary" onClick={() => navigate('/test/create')}>
+            <FiPlus style={{ marginRight: '6px' }} size={16} />
+            Create New Test
+          </Button>
+        }
+      />
+
       <DashboardFilters
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -68,16 +68,7 @@ export default function Dashboard() {
       />
 
       {testsError && (
-        <div style={{
-          background: 'rgba(239, 68, 68, 0.15)',
-          border: '1px solid rgba(239, 68, 68, 0.3)',
-          borderRadius: 'var(--radius-md)',
-          color: '#fca5a5',
-          padding: '1rem',
-          marginBottom: '1.5rem'
-        }}>
-          Failed to load tests directory. Please try again later.
-        </div>
+        <ErrorBanner message="Failed to load tests directory. Please try again later." />
       )}
 
       {loading ? (
@@ -86,9 +77,11 @@ export default function Dashboard() {
         <Card style={{ padding: '64px 32px' }}>
           <EmptyState
             title="No Tests Found"
-            description={tests.length === 0 
-              ? "Get started by creating your very first test. You can add questions and publish it later." 
-              : "No tests match your current search and filter criteria. Try adjusting them."}
+            description={
+              tests.length === 0
+                ? 'Get started by creating your very first test. You can add questions and publish it later.'
+                : 'No tests match your current search and filter criteria. Try adjusting them.'
+            }
             icon={
               <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -98,11 +91,11 @@ export default function Dashboard() {
                 <line x1="9" y1="11" x2="10" y2="11"></line>
               </svg>
             }
-            actionButton={tests.length === 0 && (
-              <Button onClick={() => navigate('/test/create')}>
-                Create New Test
-              </Button>
-            )}
+            actionButton={
+              tests.length === 0 && (
+                <Button onClick={() => navigate('/test/create')}>Create New Test</Button>
+              )
+            }
           />
         </Card>
       ) : (

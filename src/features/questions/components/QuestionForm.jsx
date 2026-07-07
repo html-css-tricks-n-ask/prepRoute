@@ -1,4 +1,3 @@
-import React from 'react';
 import RichTextEditor from '../../../components/forms/RichTextEditor';
 import Input from '../../../components/common/Input';
 import Button from '../../../components/common/Button';
@@ -29,7 +28,7 @@ export default function QuestionForm({
   const errorsList = Object.values(errors).map(e => e.message);
 
   return (
-    <div id="question-form-container" className="card" style={{ padding: '24px' }}>
+    <div id="question-form-container" className="card question-builder-pane">
       <h3 className="card-title mb-4">
         {editingIndex !== null ? '📝 Edit Question details' : '➕ Question Builder'}
       </h3>
@@ -51,6 +50,9 @@ export default function QuestionForm({
           </ul>
         </div>
       )}
+
+      {/* Scrollable form body */}
+      <div className="question-builder-scroll">
 
       {/* Question text rich editor */}
       <RichTextEditor 
@@ -197,7 +199,10 @@ export default function QuestionForm({
         disabled={submitting}
       />
 
-      <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
+      </div>{/* end question-builder-scroll */}
+
+      {/* Pinned submit button at bottom of builder column */}
+      <div className="question-builder-actions">
         <Button
           variant="primary"
           style={{ flex: 1 }}

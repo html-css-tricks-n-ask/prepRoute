@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +12,9 @@ import {
   useUpdateTestMutation,
 } from '../../../store/apiSlice';
 import { questionSchema } from '../constants/questionSchema';
+import { storage } from '../../../utils/storage';
+import { STORAGE_KEYS } from '../../../constants/storage';
+import { ROUTES } from '../../../constants/routes';
 
 export function useAddQuestions() {
   const navigate = useNavigate();
@@ -29,15 +32,7 @@ export function useAddQuestions() {
 
   // State management
   const [questionsList, setQuestionsList] = useState(() => {
-    try {
-      const stored = localStorage.getItem(`unsaved_questions_${testId}`);
-      if (stored) {
-        return JSON.parse(stored);
-      }
-    } catch (e) {
-      console.error('Error parsing stored questions:', e);
-    }
-    return [];
+    return storage.getJSON(STORAGE_KEYS.unsavedQuestions(testId)) ?? [];
   });
   const [editingIndex, setEditingIndex] = useState(null);
   // Delete confirmation state
@@ -51,9 +46,9 @@ export function useAddQuestions() {
     }
   }, [test?.topic_ids, getSubTopicsMulti]);
 
-  // Load existing questions from the backend if there are no unsaved changes in localStorage
+  // Load existing questions from the backend if there are no unsaved changes
   useEffect(() => {
-    const hasUnsaved = localStorage.getItem(`unsaved_questions_${testId}`) !== null;
+    const hasUnsaved = storage.get(STORAGE_KEYS.unsavedQuestions(testId)) !== null;
     if (fetchedQuestions && !hasUnsaved) {
       setQuestionsList(fetchedQuestions);
     }
@@ -99,21 +94,19 @@ export function useAddQuestions() {
   const testTopics = allTopics.filter(t => test?.topic_ids?.includes(t.id));
   const testSubTopics = allSubTopics.filter(st => test?.sub_topic_ids?.includes(st.id));
 
-  // Add/Update single question in the local list
-  const handleAddQuestion = (values) => {
+  const handleAddQuestion = useCallback((values) => {
     const questionData = {
       ...values,
       test_id: testId,
-      // Keep ID and created date if editing
       id: editingIndex !== null ? questionsList[editingIndex].id : undefined,
-      created_at: editingIndex !== null ? questionsList[editingIndex].created_at : undefined
+      created_at: editingIndex !== null ? questionsList[editingIndex].created_at : undefined,
     };
 
     if (editingIndex !== null) {
       setQuestionsList(prev => {
         const updated = [...prev];
         updated[editingIndex] = questionData;
-        localStorage.setItem(`unsaved_questions_${testId}`, JSON.stringify(updated));
+        storage.setJSON(STORAGE_KEYS.unsavedQuestions(testId), updated);
         return updated;
       });
       setEditingIndex(null);
@@ -121,13 +114,12 @@ export function useAddQuestions() {
     } else {
       setQuestionsList(prev => {
         const updated = [...prev, questionData];
-        localStorage.setItem(`unsaved_questions_${testId}`, JSON.stringify(updated));
+        storage.setJSON(STORAGE_KEYS.unsavedQuestions(testId), updated);
         return updated;
       });
       toast.success('Question added to test list.');
     }
 
-    // Reset Form Fields
     reset({
       question: '',
       option1: '',
@@ -141,9 +133,9 @@ export function useAddQuestions() {
       sub_topic_id: '',
       media_url: ''
     });
-  };
+  }, [editingIndex, questionsList, testId, reset]);
 
-  const handleEditQuestion = (index) => {
+  const handleEditQuestion = useCallback((index) => {
     const q = questionsList[index];
     reset({
       question: q.question,
@@ -159,23 +151,19 @@ export function useAddQuestions() {
       media_url: q.media_url || ''
     });
     setEditingIndex(index);
-    
-    const formContainer = document.getElementById('question-form-container');
-    if (formContainer) {
-      formContainer.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    document.getElementById('question-form-container')?.scrollIntoView({ behavior: 'smooth' });
+  }, [questionsList, reset]);
 
-  const handleDeleteQuestion = (index) => {
+  const handleDeleteQuestion = useCallback((index) => {
     setDeleteIdx(index);
     setIsDeleteConfirmOpen(true);
-  };
+  }, []);
 
-  const confirmDelete = () => {
+  const confirmDelete = useCallback(() => {
     if (deleteIdx === null) return;
     setQuestionsList(prev => {
       const updated = prev.filter((_, idx) => idx !== deleteIdx);
-      localStorage.setItem(`unsaved_questions_${testId}`, JSON.stringify(updated));
+      storage.setJSON(STORAGE_KEYS.unsavedQuestions(testId), updated);
       return updated;
     });
     if (editingIndex === deleteIdx) {
@@ -187,28 +175,24 @@ export function useAddQuestions() {
     toast.success('Question removed.');
     setIsDeleteConfirmOpen(false);
     setDeleteIdx(null);
-  };
+  }, [deleteIdx, editingIndex, testId, reset]);
 
-  const cancelDelete = () => {
+  const cancelDelete = useCallback(() => {
     setIsDeleteConfirmOpen(false);
     setDeleteIdx(null);
-  };
+  }, []);
 
-  const handleSaveAndContinue = async () => {
+  const handleSaveAndContinue = useCallback(async () => {
     if (questionsList.length === 0) {
       toast.error('Minimum 1 question is required before saving and continuing.');
       return;
     }
 
     try {
-      // 1. Bulk Save/Update Questions
       const savedQuestions = await createQuestionsBulk(questionsList).unwrap();
       const questionIds = savedQuestions.map(q => q.id);
-
-      // 2. Compute total marks dynamically
       const calculatedTotalMarks = questionsList.length * (test?.correct_marks || 5);
 
-      // 3. Update test metadata
       await updateTest({
         id: testId,
         questions: questionIds,
@@ -216,14 +200,14 @@ export function useAddQuestions() {
         total_marks: calculatedTotalMarks
       }).unwrap();
 
-      localStorage.removeItem(`unsaved_questions_${testId}`);
+      storage.remove(STORAGE_KEYS.unsavedQuestions(testId));
       toast.success('Questions saved successfully!');
-      navigate(`/test/${testId}/preview`);
+      navigate(ROUTES.TEST_PREVIEW(testId));
     } catch (err) {
       console.error(err);
       toast.error(err.data?.message || err.message || 'Failed to save questions.');
     }
-  };
+  }, [questionsList, test, testId, createQuestionsBulk, updateTest, navigate]);
 
   const loading = testLoading;
   const submitting = isBulkSaving || isTestUpdating;

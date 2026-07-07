@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { FiAlertTriangle } from 'react-icons/fi';
 
 export default function ConfirmationModal({ 

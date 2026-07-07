@@ -1,4 +1,3 @@
-import React from 'react';
 
 export default function StickyFooter({ children, className = '' }) {
   return (

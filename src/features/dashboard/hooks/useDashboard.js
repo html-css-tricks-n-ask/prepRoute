@@ -1,63 +1,63 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { 
-  useGetTestsQuery, 
-  useGetSubjectsQuery, 
-  useDeleteTestMutation 
+import {
+  useGetTestsQuery,
+  useGetSubjectsQuery,
+  useDeleteTestMutation,
 } from '../../../store/apiSlice';
+import { useModal } from '../../../hooks/useModal';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 export function useDashboard() {
   const navigate = useNavigate();
-  
-  // RTK Query fetches
+
   const { data: tests = [], isLoading: testsLoading, error: testsError, refetch: refetchTests } = useGetTestsQuery();
   const { data: subjects = [], isLoading: subjectsLoading } = useGetSubjectsQuery();
   const [deleteTest, { isLoading: isDeleting }] = useDeleteTestMutation();
 
-  // Filter and Search States
+  // Search and filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [subjectFilter, setSubjectFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
-  // Delete modal state triggers
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [testToDelete, setTestToDelete] = useState(null);
+  // Debounced search avoids filtering on every keystroke
+  const debouncedSearch = useDebounce(searchQuery, 250);
+
+  // Delete confirmation modal (replaces manual isOpen + testToDelete state)
+  const deleteModal = useModal();
 
   const handleDelete = useCallback((testId, testName) => {
-    setTestToDelete({ id: testId, name: testName });
-    setIsDeleteModalOpen(true);
-  }, []);
+    deleteModal.open({ id: testId, name: testName });
+  }, [deleteModal]);
 
-  const handleConfirmDelete = async () => {
-    if (!testToDelete) return;
+  const handleConfirmDelete = useCallback(async () => {
+    if (!deleteModal.item) return;
     try {
-      await deleteTest(testToDelete.id).unwrap();
+      await deleteTest(deleteModal.item.id).unwrap();
       toast.success('Test deleted successfully.');
       refetchTests();
-      setIsDeleteModalOpen(false);
-      setTestToDelete(null);
+      deleteModal.close();
     } catch (err) {
       console.error(err);
       toast.error(err.data?.message || err.message || 'Something went wrong. Please try again.');
     }
-  };
+  }, [deleteModal, deleteTest, refetchTests]);
 
-  // Client-side filtering logic memoized
+  // Client-side filtering — recomputes only when deps change
   const filteredTests = useMemo(() => {
+    const q = debouncedSearch.toLowerCase();
     return tests.filter(test => {
-      const matchesSearch = test.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            (test.subject && test.subject.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesSubject = subjectFilter 
-        ? test.subject_id === subjectFilter || test.subject === subjectFilter 
+      const matchesSearch =
+        test.name.toLowerCase().includes(q) ||
+        (test.subject && test.subject.toLowerCase().includes(q));
+      const matchesSubject = subjectFilter
+        ? test.subject_id === subjectFilter || test.subject === subjectFilter
         : true;
-        
       const matchesStatus = statusFilter ? test.status === statusFilter : true;
-      
       return matchesSearch && matchesSubject && matchesStatus;
     });
-  }, [tests, searchQuery, subjectFilter, statusFilter]);
+  }, [tests, debouncedSearch, subjectFilter, statusFilter]);
 
   const loading = testsLoading || subjectsLoading;
 
@@ -74,11 +74,12 @@ export function useDashboard() {
     setSubjectFilter,
     statusFilter,
     setStatusFilter,
-    isDeleteModalOpen,
-    setIsDeleteModalOpen,
-    testToDelete,
+    // Expose modal state with names matching existing Dashboard.jsx consumers
+    isDeleteModalOpen: deleteModal.isOpen,
+    setIsDeleteModalOpen: (val) => (val ? deleteModal.open() : deleteModal.close()),
+    testToDelete: deleteModal.item,
     handleDelete,
     handleConfirmDelete,
-    filteredTests
+    filteredTests,
   };
 }
