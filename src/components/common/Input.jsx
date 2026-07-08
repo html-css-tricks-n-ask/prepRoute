@@ -31,8 +31,7 @@ const Input = forwardRef(({
           id={id}
           disabled={disabled}
           placeholder={placeholder}
-          className={`form-control ${error ? 'error' : ''}`.trim()}
-          style={isPassword ? { paddingRight: '2.75rem' } : {}}
+          className={`form-control ${error ? 'error' : ''} ${isPassword ? 'password-input' : ''}`.trim()}
           {...props}
         />
         {isPassword && (

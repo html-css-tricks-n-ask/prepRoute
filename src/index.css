@@ -479,6 +479,10 @@ a:hover {
   box-shadow: var(--shadow-sm);
 }
 
+.form-control.password-input {
+  padding-right: 2.75rem !important;
+}
+
 .form-control:focus {
   border-color: var(--border-color-focus);
   background: #ffffff;
